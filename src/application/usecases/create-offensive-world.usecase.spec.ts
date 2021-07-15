@@ -1,7 +1,6 @@
 import { OffensiveWordService } from '../../domain/services/offensive-word.service';
 import {CreateOffensiveWordUseCase} from './create-offensive-word.usecase';
-import { OffensiveWordRepositoryMemory } from './../../infrastructure/repositories/offensive-word.repository.memory';
-import { mock, instance, when, verify } from 'ts-mockito';
+import { mock } from 'ts-mockito';
 import { OffensiveWordRepository } from '../../domain/repositories/offensive-word.repository';
 
 describe('Create offensive word Use Case', () => {
