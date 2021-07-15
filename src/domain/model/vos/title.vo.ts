@@ -10,11 +10,14 @@ export class TitleVO {
     private constructor(private title: string) {}
 
     static create(title: string): TitleVO {
+        if (!title) {
+            throw new Error('El título es requerido');
+        }
         if (title.length < this.MIN_LENGTH) {
-            throw new Error(`Content no puede ser inferior a ${this.MIN_LENGTH} caracteres`);
+            throw new Error(`El título no puede ser inferior a ${this.MIN_LENGTH} caracteres`);
         }
         if (title.length > this.MAX_LENGTH) {
-            throw new Error(`Content no puede ser superior a ${this.MAX_LENGTH} caracteres`);
+            throw new Error(`El título no puede ser superior a ${this.MAX_LENGTH} caracteres`);
         }
         return new TitleVO(title);
     }

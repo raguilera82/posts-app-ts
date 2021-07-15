@@ -1,4 +1,4 @@
-import { isUuid } from 'uuidv4';
+import { validate } from 'uuid';
 
 export class IdVO {
 
@@ -9,7 +9,7 @@ export class IdVO {
     private constructor(private id: string) {}
 
     static create(id: string): IdVO {
-        if (!isUuid(id)) {
+        if (!validate(id)) {
             throw new Error('ID no es un UUID');
         }
         return new IdVO(id);

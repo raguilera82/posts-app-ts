@@ -1,16 +1,16 @@
-import { IdVO } from './id.vo';
-import { NameAuthorVO } from './name-author.vo';
-import { NicknameAuthorVO } from './nickname-author.vo';
+import { IdVO } from '../vos/id.vo';
+import { NameAuthorVO } from '../vos/name-author.vo';
+import { NicknameAuthorVO } from '../vos/nickname-author.vo';
 
-export type Author = {
+export type AuthorType = {
     id: IdVO;
     name: NameAuthorVO;
     nickname: NicknameAuthorVO;
 }
 
-export class AuthorEntity {
+export class Author {
 
-    constructor(private author: Author) {}
+    constructor(private author: AuthorType) {}
 
     get id(): string {
         return this.author.id.value;
