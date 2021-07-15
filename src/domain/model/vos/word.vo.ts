@@ -6,7 +6,7 @@ export class WordVO {
 
     private constructor(private word: string) {}
 
-    static create(word: string) {
+    static create(word: string): WordVO {
         return new WordVO(word);
     }
 
