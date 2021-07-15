@@ -1,10 +1,11 @@
 import { ContentCommentVO } from '../vos/content-comment.vo';
 import { NicknameAuthorVO } from '../vos/nickname-author.vo';
+import { TimestampVO } from '../vos/timestamp.vo';
 
 export type CommentType = {
     nickname: NicknameAuthorVO;
     content: ContentCommentVO;
-    timestamp: string;
+    timestamp: TimestampVO;
 }
 
 export class Comment {
@@ -20,6 +21,6 @@ export class Comment {
     }
 
     get timestamp(): string {
-        return this.comment.timestamp;
+        return this.comment.timestamp.value;
     }
 }

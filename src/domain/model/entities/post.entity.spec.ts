@@ -4,6 +4,7 @@ import { ContentVO } from '../vos/content.vo';
 import { IdVO } from '../vos/id.vo';
 import { NameAuthorVO } from '../vos/name-author.vo';
 import { NicknameAuthorVO } from '../vos/nickname-author.vo';
+import { TimestampVO } from '../vos/timestamp.vo';
 import { TitleVO } from '../vos/title.vo';
 import { AuthorType, Author } from './author.entity';
 import { CommentType, Comment } from './comment.entity';
@@ -31,7 +32,7 @@ describe('Post', () => {
         const commentType: CommentType = {
             content: ContentCommentVO.create('Mi comentario sobre el post'),
             nickname: NicknameAuthorVO.create('raguilera'),
-            timestamp: new Date().getMilliseconds().toString()
+            timestamp: TimestampVO.create()
         };
         const comment: Comment = new Comment(commentType);
 
@@ -48,10 +49,14 @@ describe('Post', () => {
         expect(idPost.value).toEqual(post.id);
         expect(titlePost.value).toEqual(post.title);
         expect(content.value).toEqual(post.content);
+        
         expect(idAuthor.value).toEqual(post.author.id);
         expect(nameAuthor.value).toEqual(post.author.name);
         expect(nicknameAuthor.value).toEqual(post.author.nickname);
+
         expect(post.comments[0].content).toEqual(comment.content);
+        expect(post.comments[0].nickname).toEqual(comment.nickname);
+        expect(post.comments[0].timestamp).toEqual(comment.timestamp);
         
     });
         
