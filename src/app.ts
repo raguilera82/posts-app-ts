@@ -1,7 +1,13 @@
+import 'reflect-metadata';
+
 import { connectToDB } from './infrastructure/config/mongo';
 import express from 'express';
 import { json } from 'body-parser';
 import { offensiveWordRouter } from './infrastructure/routes/offensive-word.routes';
+import Container from 'typedi';
+import { OffensiveWordRepositoryMongo } from './infrastructure/repositories/offensive-word.repository.mongo';
+
+Container.set('OffensiveWordRepository', new OffensiveWordRepositoryMongo());
 
 connectToDB();
 
