@@ -1,4 +1,3 @@
-import { v4 } from 'uuid';
 import { ContentCommentVO } from '../vos/content-comment.vo';
 import { ContentVO } from '../vos/content.vo';
 import { IdVO } from '../vos/id.vo';
@@ -12,10 +11,10 @@ import { PostType, Post } from './post.entity';
 
 describe('Post', () => {
     it('should create post', () => {
-        const idPost: IdVO = IdVO.create(v4());
+        const idPost: IdVO = IdVO.create();
         const titlePost: TitleVO = TitleVO.create('Mi titulo de posts');
 
-        const idAuthor: IdVO = IdVO.create(v4());
+        const idAuthor: IdVO = IdVO.create();
         const nameAuthor = NameAuthorVO.create('Ruben Aguilera');
         const nicknameAuthor = NicknameAuthorVO.create('raguilera');
         const authorType: AuthorType = {

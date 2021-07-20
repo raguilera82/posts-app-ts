@@ -1,5 +1,4 @@
 import {OffensiveWordType, OffensiveWord} from './offensive-word.entity';
-import {v4} from 'uuid';
 import { IdVO } from '../vos/id.vo';
 import { WordVO } from '../vos/word.vo';
 import { LevelVO } from '../vos/level.vo';
@@ -8,7 +7,7 @@ describe('Offensive Word', () => {
 
     it('should create', () => {
         const offensiveWordData: OffensiveWordType = {
-            id: IdVO.create(v4()),
+            id: IdVO.create(),
             word: WordVO.create('Caca'),
             level: LevelVO.create(1)
         };

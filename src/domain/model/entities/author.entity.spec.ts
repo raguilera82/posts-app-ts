@@ -1,4 +1,3 @@
-import { v4 } from 'uuid';
 import { IdVO } from '../vos/id.vo';
 import { NameAuthorVO } from '../vos/name-author.vo';
 import { NicknameAuthorVO } from '../vos/nickname-author.vo';
@@ -7,7 +6,7 @@ import { Author, AuthorType } from './author.entity';
 describe('Author entity', () => {
 
     it('should create an author', () => {
-        const id: IdVO = IdVO.create(v4());
+        const id: IdVO = IdVO.create();
         const name: NameAuthorVO = NameAuthorVO.create('Ruben Aguilera');
         const nickname: NicknameAuthorVO = NicknameAuthorVO.create('raguilera');
 
