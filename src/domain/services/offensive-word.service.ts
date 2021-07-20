@@ -5,14 +5,15 @@ import { OffensiveWordRepository } from '../repositories/offensive-word.reposito
 @Service()
 export class OffensiveWordService {
 
-    offensiveWordRepository: OffensiveWordRepository;
-
-    constructor(@Inject('OffensiveWordRepository') offensiveWordRepository: OffensiveWordRepository) {
-        this.offensiveWordRepository = offensiveWordRepository;
-    }
+    constructor(@Inject('OffensiveWordRepository') private offensiveWordRepository: OffensiveWordRepository) {}
 
     persist(offensiveWord: OffensiveWordType): void {
         const offensiveWordEntity = new OffensiveWord(offensiveWord);
         this.offensiveWordRepository.save(offensiveWordEntity);
+    }
+
+    async getAll(): Promise<OffensiveWord[]> {
+        const offensiveWords = await this.offensiveWordRepository.getAll();
+        return offensiveWords;
     }
 }

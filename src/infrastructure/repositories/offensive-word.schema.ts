@@ -10,7 +10,7 @@ const OffensiveWordSchema = new mongoose.Schema({
         required: true
     },
     level: {
-        type: String,
+        type: Number,
         required: true
     }
 });
