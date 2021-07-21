@@ -13,16 +13,16 @@ export class OffensiveWord {
 
     constructor(private offensiveWord: OffensiveWordType) {}
 
-    get id(): string {
-        return this.offensiveWord.id.value;
+    get id(): IdVO {
+        return this.offensiveWord.id;
     }
 
-    get word(): string {
-        return this.offensiveWord.word.value;
+    get word(): WordVO {
+        return this.offensiveWord.word;
     }
 
-    get level(): number {
-        return this.offensiveWord.level.value;
+    get level(): LevelVO {
+        return this.offensiveWord.level;
     }
 
 }

@@ -1,14 +1,12 @@
 import express from 'express';
 import { CreateOffensiveWordUseCase } from '../../application/usecases/create-offensive-word.usecase';
-import { IdVO } from '../../domain/model/vos/id.vo';
-import { LevelVO } from '../../domain/model/vos/level.vo';
-import { WordVO } from '../../domain/model/vos/word.vo';
-import { v4 } from 'uuid';
-import { OffensiveWordType } from '../../domain/model/entities/offensive-word.entity';
 import Container from 'typedi';
 import { GetAllOffensiveWordsUseCase } from '../../application/usecases/get-all-offensive-word.usecase';
 import { OffensiveWordRequest } from '../../application/usecases/offensive-word.request';
 import { OffensiveWordResponse } from '../../application/usecases/offensive-word.response';
+import { DeleteOffensiveWordUseCase } from '../../application/usecases/delete-offensive-word.usecase';
+import { IdRequest } from '../../application/usecases/id.request';
+import { UpdateOffensiveWordUseCase } from '../../application/usecases/update-offensive-word.usecase';
 
 const router = express.Router();
 
@@ -27,6 +25,29 @@ router.post('/api/offensive-word', (req, res) => {
     const useCase = Container.get(CreateOffensiveWordUseCase);
     useCase.execute(offensiveWordRequest);
     return res.status(201).send('Created!');
+});
+
+router.delete('/api/offensive-word/:id', (req, res) => {
+    const idDelete: IdRequest = req.params.id;
+    const useCase = Container.get(DeleteOffensiveWordUseCase);
+    useCase.execute(idDelete);
+    return res.send('Deleted!');
+});
+
+router.put('/api/offensive-word/:id', (req, res) => {
+    try {
+
+        const idUpdate: IdRequest = req.params.id;
+        const { word, level } = req.body;
+        const offensiveWordRequest: OffensiveWordRequest = {word, level};
+        const useCase = Container.get(UpdateOffensiveWordUseCase);
+        useCase.execute(idUpdate, offensiveWordRequest);
+        return res.send('Updated!');
+
+    }catch(err) {
+        return res.status(400).send({'message': err.message});
+    }
+    
 });
 
 export { router as offensiveWordRouter };

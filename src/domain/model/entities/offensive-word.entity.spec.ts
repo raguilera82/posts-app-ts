@@ -14,9 +14,9 @@ describe('Offensive Word', () => {
 
         const offensiveWord = new OffensiveWord(offensiveWordData);
 
-        expect(offensiveWord.id).toEqual(offensiveWordData.id.value);
-        expect(offensiveWord.word).toEqual(offensiveWordData.word.value);
-        expect(offensiveWord.level).toEqual(offensiveWordData.level.value);
+        expect(offensiveWord.id.value).toEqual(offensiveWordData.id.value);
+        expect(offensiveWord.word.value).toEqual(offensiveWordData.word.value);
+        expect(offensiveWord.level.value).toEqual(offensiveWordData.level.value);
     });
 
 });

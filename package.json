@@ -8,7 +8,7 @@
     "build:watch": "tsc --build tsconfig.json --watch",
     "test": "jest --coverage",
     "lint": "eslint ./src --ext .ts",
-    "start": "npm run build && node dist/app.js"
+    "start": "nodemon --watch dist dist/app.js"
   },
   "commitlint": {
     "extends": "@commitlint/config-conventional"
@@ -31,6 +31,7 @@
     "eslint-plugin-promise": "^5.1.0",
     "husky": "^7.0.1",
     "jest": "^27.0.6",
+    "nodemon": "^2.0.12",
     "ts-jest": "^27.0.3",
     "ts-mockito": "^2.6.1",
     "typescript": "^4.3.5"
