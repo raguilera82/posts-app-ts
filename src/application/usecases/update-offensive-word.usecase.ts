@@ -12,14 +12,15 @@ export class UpdateOffensiveWordUseCase {
 
     constructor(private offensiveWordService: OffensiveWordService) {}
 
-    execute(id: IdRequest, offensiveWordRequest: OffensiveWordRequest): void {
+    async execute(id: IdRequest, offensiveWordRequest: OffensiveWordRequest): Promise<void> {
+        console.log(offensiveWordRequest);
         const offensiveWordData: OffensiveWordType = {
             id: IdVO.createWithUUID(id),
             word: WordVO.create(offensiveWordRequest.word),
             level: LevelVO.create(offensiveWordRequest.level)
         };
         const offensiveWord = new OffensiveWord(offensiveWordData);
-        this.offensiveWordService.update(offensiveWord);
+        await this.offensiveWordService.update(offensiveWord);
 
     }
 

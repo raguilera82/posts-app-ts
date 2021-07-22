@@ -11,7 +11,7 @@ export class GetAllOffensiveWordsUseCase {
     async execute(): Promise<OffensiveWordResponse[]> {
         const offensiveWords: OffensiveWord[] = await this.offensiveWordService.getAll();
         const offensiveWordResponse: OffensiveWordResponse[] = offensiveWords.map(of => {
-            return {word: of.word.value, level: of.level.value};
+            return {id: of.id.value, word: of.word.value, level: of.level.value};
         });
         return offensiveWordResponse;
     }
