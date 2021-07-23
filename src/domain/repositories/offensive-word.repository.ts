@@ -1,15 +1,15 @@
-import { OffensiveWord, OffensiveWordType } from '../model/entities/offensive-word.entity';
+import { OffensiveWord } from '../model/entities/offensive-word.entity';
 import { IdVO } from '../model/vos/id.vo';
 
 export interface OffensiveWordRepository {
 
     save(offensiveWord: OffensiveWord): void;
 
-    getAll(): Promise<OffensiveWordType[]>;
+    getAll(): Promise<OffensiveWord[]>;
 
-    getById(id: IdVO): Promise<OffensiveWordType>;
+    getById(id: IdVO): Promise<OffensiveWord>;
 
-    delete(id: IdVO): void;
+    delete(id: IdVO): Promise<void>;
 
     update(offensiveWord: OffensiveWord): Promise<void>;
 

@@ -13,7 +13,6 @@ export class UpdateOffensiveWordUseCase {
     constructor(private offensiveWordService: OffensiveWordService) {}
 
     async execute(id: IdRequest, offensiveWordRequest: OffensiveWordRequest): Promise<void> {
-        console.log(offensiveWordRequest);
         const offensiveWordData: OffensiveWordType = {
             id: IdVO.createWithUUID(id),
             word: WordVO.create(offensiveWordRequest.word),

@@ -8,9 +8,11 @@ export class DeleteOffensiveWordUseCase {
 
     constructor(private offensiveWordService: OffensiveWordService) {}
 
-    execute(idRequest: IdRequest): void {
+    async execute(idRequest: IdRequest): Promise<void> {
 
-        this.offensiveWordService.delete(IdVO.createWithUUID(idRequest));
+        const id = IdVO.createWithUUID(idRequest);
+
+        await this.offensiveWordService.delete(id);
 
     }
 

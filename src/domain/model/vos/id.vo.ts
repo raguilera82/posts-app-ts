@@ -1,4 +1,5 @@
 import { validate, v4 } from 'uuid';
+import { ExceptionWithCode } from '../exception-with-code';
 
 export class IdVO {
 
@@ -10,7 +11,7 @@ export class IdVO {
 
     static createWithUUID(uuid: string): IdVO {
         if (!validate(uuid)) {
-            throw new Error('ID no es un UUID');
+            throw new ExceptionWithCode(400, 'ID no es un UUID');
         }
         return new IdVO(uuid);
     }

@@ -1,5 +1,6 @@
 import { Inject, Service } from 'typedi';
 import { OffensiveWord, OffensiveWordType } from '../model/entities/offensive-word.entity';
+import { ExceptionWithCode } from '../model/exception-with-code';
 import { IdVO } from '../model/vos/id.vo';
 import { LevelVO } from '../model/vos/level.vo';
 import { WordVO } from '../model/vos/word.vo';
@@ -16,23 +17,25 @@ export class OffensiveWordService {
     }
 
     async getAll(): Promise<OffensiveWord[]> {
-        const of = await this.offensiveWordRepository.getAll();
-        
-        return of.map((ofModel: any) => {
-            const offensiveWordData: OffensiveWordType = {
-                id: IdVO.createWithUUID(ofModel.id),
-                level: LevelVO.create(ofModel.level),
-                word: WordVO.create(ofModel.word)
-            };
-            return new OffensiveWord(offensiveWordData);
-        });
+        return this.offensiveWordRepository.getAll();
     }
 
-    delete(id: IdVO): void {
-        this.offensiveWordRepository.delete(id);
+    async getById(id: IdVO): Promise<OffensiveWord> {
+        const offensiveWordDB: OffensiveWord = await this.offensiveWordRepository.getById(id);
+        if (!offensiveWordDB) {
+            throw new ExceptionWithCode(404, 'Id Not Found');
+        }
+
+        return offensiveWordDB;
+    }
+
+    async delete(id: IdVO): Promise<void> {
+        await this.checkIfIDExits(id);
+        await this.offensiveWordRepository.delete(id);
     }
 
     async update(offensiveWord: OffensiveWord): Promise<void> {
+        await this.checkIfIDExits(offensiveWord.id);
         const offensiveWordOriginal = await this.offensiveWordRepository.getById(offensiveWord.id);
         
         const offensiveWordMerge: OffensiveWordType = {
@@ -41,5 +44,9 @@ export class OffensiveWordService {
             level: LevelVO.create(offensiveWord.level.value ?? offensiveWordOriginal.level.value)
         };
         await this.offensiveWordRepository.update(new OffensiveWord(offensiveWordMerge));
+    }
+
+    private async checkIfIDExits(id: IdVO): Promise<void> {
+        await this.getById(id);
     }
 }

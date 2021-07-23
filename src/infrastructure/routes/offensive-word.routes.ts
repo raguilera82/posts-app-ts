@@ -7,6 +7,7 @@ import { OffensiveWordResponse } from '../../application/usecases/offensive-word
 import { DeleteOffensiveWordUseCase } from '../../application/usecases/delete-offensive-word.usecase';
 import { IdRequest } from '../../application/usecases/id.request';
 import { UpdateOffensiveWordUseCase } from '../../application/usecases/update-offensive-word.usecase';
+import { body, validationResult } from 'express-validator';
 
 const router = express.Router();
 
@@ -16,22 +17,41 @@ router.get('/api/offensive-word', async (req, res) => {
     return res.status(200).json(offensiveWords);
 });
 
-router.post('/api/offensive-word', (req, res) => {
-    const { word, level } = req.body;
-    const offensiveWordRequest: OffensiveWordRequest = {
-        word,
-        level
-    };
-    const useCase = Container.get(CreateOffensiveWordUseCase);
-    useCase.execute(offensiveWordRequest);
-    return res.status(201).send('Created!');
-});
+router.post('/api/offensive-word', 
+    body('word').notEmpty().escape(), 
+    body('level').notEmpty().isNumeric(), 
+    (req: express.Request, res: express.Response) => {
 
-router.delete('/api/offensive-word/:id', (req, res) => {
-    const idDelete: IdRequest = req.params.id;
-    const useCase = Container.get(DeleteOffensiveWordUseCase);
-    useCase.execute(idDelete);
-    return res.send('Deleted!');
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+    
+        const { word, level } = req.body;
+        const offensiveWordRequest: OffensiveWordRequest = {
+            word,
+            level
+        };
+        const useCase = Container.get(CreateOffensiveWordUseCase);
+        useCase.execute(offensiveWordRequest);
+        return res.status(201).send('Created!');
+    });
+
+router.delete('/api/offensive-word/:id', async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const idDelete: IdRequest = req.params?.id;
+        const useCase = Container.get(DeleteOffensiveWordUseCase);
+        await useCase.execute(idDelete);
+        return res.send('Deleted!');
+
+    }catch(err) {
+        return res.status(err.code).json({error: err.message});
+    }
 });
 
 router.put('/api/offensive-word/:id', (req, res) => {
