@@ -20,6 +20,4 @@ const app = express();
 app.use(json());
 app.use(offensiveWordRouter);
 
-app.listen(3000, () => {
-    console.log('Server started');
-});
+export default app;

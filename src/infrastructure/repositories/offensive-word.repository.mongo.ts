@@ -1,5 +1,6 @@
 import { AnyObject } from 'mongoose';
 import { OffensiveWord, OffensiveWordType } from '../../domain/model/entities/offensive-word.entity';
+import { ExceptionWithCode } from '../../domain/model/exception-with-code';
 import { IdVO } from '../../domain/model/vos/id.vo';
 import { LevelVO } from '../../domain/model/vos/level.vo';
 import { WordVO } from '../../domain/model/vos/word.vo';
@@ -24,8 +25,12 @@ export class OffensiveWordRepositoryMongo implements OffensiveWordRepository {
         });
     }
 
-    async getById(id: IdVO): Promise<OffensiveWord> {
+    async getById(id: IdVO): Promise<OffensiveWord | null> {
         const offensiveWordDB = await OffensiveWordModel.findOne({id: id.value}).exec();
+
+        if (!offensiveWordDB) {
+            return null;
+        }
 
         const offensiveWordData: OffensiveWordType = {
             id: IdVO.createWithUUID(offensiveWordDB.id),
@@ -36,14 +41,14 @@ export class OffensiveWordRepositoryMongo implements OffensiveWordRepository {
         return new OffensiveWord(offensiveWordData);
     }
     
-    save(offensiveWord: OffensiveWord): void {
+    async save(offensiveWord: OffensiveWord): Promise<void> {
         const newOffensiveWord = {
             id: offensiveWord.id.value,
             word: offensiveWord.word.value,
             level: offensiveWord.level.value
         };
         const offensiveWordModel = new OffensiveWordModel(newOffensiveWord);
-        offensiveWordModel.save();
+        await offensiveWordModel.save();
     }
 
     async delete(id: IdVO): Promise<void> {

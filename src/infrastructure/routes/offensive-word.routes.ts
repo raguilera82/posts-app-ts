@@ -20,7 +20,7 @@ router.get('/api/offensive-word', async (req, res) => {
 router.post('/api/offensive-word', 
     body('word').notEmpty().escape(), 
     body('level').notEmpty().isNumeric(), 
-    (req: express.Request, res: express.Response) => {
+    async (req: express.Request, res: express.Response) => {
 
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -33,8 +33,8 @@ router.post('/api/offensive-word',
             level
         };
         const useCase = Container.get(CreateOffensiveWordUseCase);
-        useCase.execute(offensiveWordRequest);
-        return res.status(201).send('Created!');
+        const offensiveWordResponse = await useCase.execute(offensiveWordRequest);
+        return res.status(201).send(offensiveWordResponse);
     });
 
 router.delete('/api/offensive-word/:id', async (req, res) => {

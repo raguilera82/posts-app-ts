@@ -3,11 +3,11 @@ import { IdVO } from '../model/vos/id.vo';
 
 export interface OffensiveWordRepository {
 
-    save(offensiveWord: OffensiveWord): void;
+    save(offensiveWord: OffensiveWord): Promise<void>;
 
     getAll(): Promise<OffensiveWord[]>;
 
-    getById(id: IdVO): Promise<OffensiveWord>;
+    getById(id: IdVO): Promise<OffensiveWord | null>;
 
     delete(id: IdVO): Promise<void>;
 
