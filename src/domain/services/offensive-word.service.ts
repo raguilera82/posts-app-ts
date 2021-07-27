@@ -25,13 +25,12 @@ export class OffensiveWordService {
     }
 
     async delete(id: IdVO): Promise<void> {
-        await this.checkIfIDExits(id);
-        await this.offensiveWordRepository.delete(id);
+        const offensiveWord = await this.checkIfIDExits(id);
+        await this.offensiveWordRepository.delete(offensiveWord.id);
     }
 
     async update(offensiveWord: OffensiveWord): Promise<void> {
-        await this.checkIfIDExits(offensiveWord.id);
-        const offensiveWordOriginal = await this.offensiveWordRepository.getById(offensiveWord.id);
+        const offensiveWordOriginal = await this.checkIfIDExits(offensiveWord.id);
         
         const offensiveWordMerge: OffensiveWordType = {
             id: offensiveWord.id,
@@ -41,10 +40,11 @@ export class OffensiveWordService {
         await this.offensiveWordRepository.update(new OffensiveWord(offensiveWordMerge));
     }
 
-    private async checkIfIDExits(id: IdVO): Promise<void> {
+    private async checkIfIDExits(id: IdVO): Promise<OffensiveWord> {
         const offensiveWordDB = await this.getById(id);
         if (!offensiveWordDB) {
             throw new ExceptionWithCode(404, `Id Not Found: ${id.value}`);
         }
+        return offensiveWordDB;
     }
 }
