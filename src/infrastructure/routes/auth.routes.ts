@@ -1,5 +1,6 @@
 import express from 'express';
 import { body } from 'express-validator';
+import jwt from 'jsonwebtoken';
 import Container from 'typedi';
 import { SignInRequest, SignInUseCase } from '../../application/usecases/sign-in.usecase';
 import { SignUpRequest, SignUpUseCase } from '../../application/usecases/sign-up.usecase';
@@ -18,8 +19,14 @@ router.post('/api/login',
                 email,
                 password
             };
-            await useCase.execute(request);
-            res.status(200).send({token: 'sdsdsd'});
+            const allow = await useCase.execute(request);
+            if (allow) {
+                const token = jwt.sign({}, 'secret', {expiresIn: 86400});
+                res.status(200).send({token});
+            }else {
+                res.status(401).send({error: 'Not permitted'});
+            }
+            
 
         }catch(err) {
             return res.status(err.code).json({error: err.message});

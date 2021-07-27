@@ -5,14 +5,26 @@ import { EmailVO } from '../model/vos/email.vo';
 import { IdVO } from '../model/vos/id.vo';
 import { PasswordVO } from '../model/vos/password.vo';
 import { UserRepository } from '../repositories/user.repository';
+import bcrypt from 'bcrypt';
 
 @Service()
 export class UserService {
 
     constructor(@Inject('UserRepository') private userRepository: UserRepository) {}
 
+    async isValidPassword(password: PasswordVO, user: User): Promise<boolean> {
+        return bcrypt.compare(password.value, user.password.value);
+    }
+
     async persist(user: User): Promise<void> {
-        await this.userRepository.save(user);
+        const hash = await bcrypt.hash(user.password.value, 10);
+        const encryptPassword = PasswordVO.create(hash);
+        const newUser: UserType = {
+            id: user.id,
+            email: user.email,
+            password: encryptPassword
+        };
+        await this.userRepository.save(new User(newUser));
     }
 
     async getAll(): Promise<User[]> {
