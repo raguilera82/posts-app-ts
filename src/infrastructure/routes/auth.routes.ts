@@ -19,9 +19,8 @@ router.post('/api/login',
                 email,
                 password
             };
-            const allow = await useCase.execute(request);
-            if (allow) {
-                const token = jwt.sign({}, 'secret', {expiresIn: 86400});
+            const token = await useCase.execute(request);
+            if (token) {
                 res.status(200).send({token});
             }else {
                 res.status(401).send({error: 'Not permitted'});

@@ -8,10 +8,11 @@ import { DeleteOffensiveWordUseCase } from '../../application/usecases/delete-of
 import { IdRequest } from '../../application/usecases/id.request';
 import { UpdateOffensiveWordUseCase } from '../../application/usecases/update-offensive-word.usecase';
 import { body, validationResult } from 'express-validator';
+import passport from 'passport';
 
 const router = express.Router();
 
-router.get('/api/offensive-word', async (req, res) => {
+router.get('/api/offensive-word', passport.authenticate('jwt', {session: false}), async (req, res) => {
     const useCase = Container.get(GetAllOffensiveWordsUseCase);
     const offensiveWords: OffensiveWordResponse[] = await useCase.execute();
     return res.status(200).json(offensiveWords);
