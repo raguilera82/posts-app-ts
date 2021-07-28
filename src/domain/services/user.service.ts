@@ -26,7 +26,6 @@ export class UserService {
             password: encryptPassword,
             role: user.role
         };
-        console.log('new user service', newUser);
         await this.userRepository.save(new User(newUser));
     }
 

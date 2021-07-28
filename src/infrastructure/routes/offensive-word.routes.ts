@@ -1,3 +1,4 @@
+import { hasRole } from './../middlewares/roles';
 import express from 'express';
 import { CreateOffensiveWordUseCase } from '../../application/usecases/create-offensive-word.usecase';
 import Container from 'typedi';
@@ -9,14 +10,17 @@ import { IdRequest } from '../../application/usecases/id.request';
 import { UpdateOffensiveWordUseCase } from '../../application/usecases/update-offensive-word.usecase';
 import { body, validationResult } from 'express-validator';
 import passport from 'passport';
+import { Role } from '../../domain/model/vos/role.vo';
 
 const router = express.Router();
 
-router.get('/api/offensive-word', passport.authenticate('jwt', {session: false}), async (req, res) => {
-    const useCase = Container.get(GetAllOffensiveWordsUseCase);
-    const offensiveWords: OffensiveWordResponse[] = await useCase.execute();
-    return res.status(200).json(offensiveWords);
-});
+router.get('/api/offensive-word', 
+    passport.authenticate('jwt', {session: false}), hasRole(Role.ADMIN),
+    async (req: express.Request, res: express.Response) => {
+        const useCase = Container.get(GetAllOffensiveWordsUseCase);
+        const offensiveWords: OffensiveWordResponse[] = await useCase.execute();
+        return res.status(200).json(offensiveWords);
+    });
 
 router.post('/api/offensive-word', 
     body('word').notEmpty().escape(), 
