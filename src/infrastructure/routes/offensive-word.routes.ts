@@ -14,6 +14,15 @@ import { Role } from '../../domain/model/vos/role.vo';
 
 const router = express.Router();
 
+/**
+ * @openapi
+ * /offensive-word:
+ *   get:
+ *     description: Welcome to swagger-jsdoc!
+ *     responses:
+ *       200:
+ *         description: Returns a mysterious string.
+ */
 router.get('/api/offensive-word', 
     passport.authenticate('jwt', {session: false}), hasRole(Role.ADMIN),
     async (req: express.Request, res: express.Response) => {
