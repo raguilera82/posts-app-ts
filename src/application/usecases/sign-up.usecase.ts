@@ -1,5 +1,7 @@
+import { User } from './../../domain/model/entities/user.entity';
+import { Role, RoleVO } from './../../domain/model/vos/role.vo';
 import { Service } from 'typedi';
-import { User, UserType } from '../../domain/model/entities/user.entity';
+import { UserType } from '../../domain/model/entities/user.entity';
 import { EmailVO } from '../../domain/model/vos/email.vo';
 import { IdVO } from '../../domain/model/vos/id.vo';
 import { PasswordVO } from '../../domain/model/vos/password.vo';
@@ -14,7 +16,8 @@ export class SignUpUseCase {
         const user: UserType = {
             id: IdVO.create(),
             email: EmailVO.create(request.email),
-            password: PasswordVO.create(request.password)
+            password: PasswordVO.create(request.password),
+            role: RoleVO.create(Role.USER)
         };
         await this.userService.persist(new User(user));
     }

@@ -2,7 +2,6 @@ import { EmailVO } from './../../domain/model/vos/email.vo';
 import { Container } from 'typedi';
 import { UserService } from './../../domain/services/user.service';
 import {Strategy, ExtractJwt , StrategyOptions} from 'passport-jwt';
-import { IdVO } from '../../domain/model/vos/id.vo';
 
 const opts: StrategyOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

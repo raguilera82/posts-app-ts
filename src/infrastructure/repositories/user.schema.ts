@@ -15,6 +15,10 @@ const UserModel = sequelize.define('users', {
     password: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    role: {
+        type: DataTypes.ENUM('ADMIN','USER'),
+        allowNull: false
     }
     
 });

@@ -1,5 +1,4 @@
 import { Sequelize } from 'sequelize';
-import { populateDatabases } from './populate';
 
 const sequelize = new Sequelize('postgres://pguser:pguser@localhost:5432/pgdb');
 
@@ -9,7 +8,6 @@ sequelize.authenticate()
 
 sequelize.sync({force: true}).then(() => {
     console.log('Database & tables created');
-    populateDatabases();
 });
 
 export default sequelize;

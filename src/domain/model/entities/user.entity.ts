@@ -1,3 +1,4 @@
+import { RoleVO } from './../vos/role.vo';
 import { EmailVO } from '../vos/email.vo';
 import { IdVO } from '../vos/id.vo';
 import { PasswordVO } from '../vos/password.vo';
@@ -6,6 +7,7 @@ export type UserType = {
     id: IdVO;
     email: EmailVO;
     password: PasswordVO;
+    role: RoleVO;
 }
 
 export class User {
@@ -22,6 +24,10 @@ export class User {
 
     get password(): PasswordVO {
         return this.user.password;
+    }
+
+    get role(): RoleVO {
+        return this.user.role;
     }
 
 }

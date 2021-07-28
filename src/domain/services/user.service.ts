@@ -1,3 +1,4 @@
+import { Role, RoleVO } from './../model/vos/role.vo';
 import { Inject, Service } from 'typedi';
 import { User, UserType } from '../model/entities/user.entity';
 import { ExceptionWithCode } from '../model/exception-with-code';
@@ -22,8 +23,10 @@ export class UserService {
         const newUser: UserType = {
             id: user.id,
             email: user.email,
-            password: encryptPassword
+            password: encryptPassword,
+            role: user.role
         };
+        console.log('new user service', newUser);
         await this.userRepository.save(new User(newUser));
     }
 
@@ -51,7 +54,8 @@ export class UserService {
         const userMerge: UserType = {
             id: user.id,
             email: EmailVO.create(user.email.value ?? userOriginal?.email.value),
-            password: PasswordVO.create(user.password.value ?? userOriginal?.password.value)
+            password: PasswordVO.create(user.password.value ?? userOriginal?.password.value),
+            role: RoleVO.create(user.role.value ?? userOriginal?.role.value)
         };
         await this.userRepository.update(new User(userMerge));
     }
