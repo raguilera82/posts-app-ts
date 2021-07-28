@@ -18,7 +18,7 @@ export class SignInUseCase {
         const plainPassword = PasswordVO.create(request.password);
         const isValid = await this.userService.isValidPassword(plainPassword, user);
         if (isValid) {
-            return jwt.sign({id: user.id.value}, 'secret', {expiresIn: 86400});
+            return jwt.sign({email: user.email.value}, 'secret', {expiresIn: 86400});
         }
         return null;
     }

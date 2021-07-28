@@ -55,18 +55,18 @@ router.delete('/api/offensive-word/:id', async (req, res) => {
     }
 });
 
-router.put('/api/offensive-word/:id', (req, res) => {
+router.put('/api/offensive-word/:id', async (req, res) => {
     try {
 
         const idUpdate: IdRequest = req.params.id;
         const { word, level } = req.body;
         const offensiveWordRequest: OffensiveWordRequest = {word, level};
         const useCase = Container.get(UpdateOffensiveWordUseCase);
-        useCase.execute(idUpdate, offensiveWordRequest);
+        await useCase.execute(idUpdate, offensiveWordRequest);
         return res.send('Updated!');
 
     }catch(err) {
-        return res.status(400).send({'message': err.message});
+        return res.status(err.code).json({error: err.message});
     }
     
 });

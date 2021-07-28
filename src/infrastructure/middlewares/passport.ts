@@ -1,3 +1,4 @@
+import { EmailVO } from './../../domain/model/vos/email.vo';
 import { Container } from 'typedi';
 import { UserService } from './../../domain/services/user.service';
 import {Strategy, ExtractJwt , StrategyOptions} from 'passport-jwt';
@@ -11,9 +12,9 @@ const opts: StrategyOptions = {
 export default new Strategy(opts, async (payload, done) => {
     try {
 
-        const {id} = payload;
+        const {email} = payload;
         const userService = Container.get(UserService);
-        const user = await userService.getById(IdVO.createWithUUID(id));
+        const user = await userService.getByEmail(EmailVO.create(email));
         if (user) {
             return done(null, user);
         }

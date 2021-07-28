@@ -1,6 +1,5 @@
 import express from 'express';
-import { body } from 'express-validator';
-import jwt from 'jsonwebtoken';
+import { body, validationResult } from 'express-validator';
 import Container from 'typedi';
 import { SignInRequest, SignInUseCase } from '../../application/usecases/sign-in.usecase';
 import { SignUpRequest, SignUpUseCase } from '../../application/usecases/sign-up.usecase';
@@ -12,6 +11,11 @@ router.post('/api/login',
     body('password').notEmpty(), 
     async (req: express.Request, res: express.Response) => {
         try {
+
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
 
             const useCase: SignInUseCase = Container.get(SignInUseCase);
             const {email, password} = req.body;
@@ -38,6 +42,11 @@ router.post('/api/sign-up',
     body('password').notEmpty(), 
     async (req: express.Request, res: express.Response) => {
         try {
+
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
 
             const useCase: SignUpUseCase = Container.get(SignUpUseCase);
             const {email, password} = req.body;
