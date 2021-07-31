@@ -18,9 +18,9 @@ describe('Author entity', () => {
 
         const author: Author = new Author(authorType);
 
-        expect(author.id).toEqual(id.value);
-        expect(author.name).toEqual(name.value);
-        expect(author.nickname).toEqual(nickname.value);
+        expect(author.id.value).toEqual(id.value);
+        expect(author.name.value).toEqual(name.value);
+        expect(author.nickname.value).toEqual(nickname.value);
     });
 
 });

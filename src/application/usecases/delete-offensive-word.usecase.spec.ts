@@ -1,4 +1,4 @@
-jest.mock('./../../infrastructure/repositories/offensive-word.repository.mongo', () => {
+/* jest.mock('./../../infrastructure/repositories/offensive-word.repository.mongo', () => {
     return {
         OffensiveWordRepositoryMongo: jest.fn().mockImplementation(() => {
             return {
@@ -11,7 +11,7 @@ jest.mock('./../../infrastructure/repositories/offensive-word.repository.mongo',
         })
     };
 });
-
+ */
 
 import 'reflect-metadata';
 import {DeleteOffensiveWordUseCase} from './delete-offensive-word.usecase';
@@ -27,6 +27,12 @@ describe('Delete offensive word Use Case', () => {
     it('should delete offensive word', async () => {
         const repository = new OffensiveWordRepositoryMongo();
         Container.set('OffensiveWordRepository', repository);
+
+        jest.spyOn(repository, 'getById').mockResolvedValue(
+            new OffensiveWord({id: IdVO.createWithUUID('eecfe194-5d2e-4940-b69e-71050257df02'), 
+                word: WordVO.create('Test'), level: LevelVO.create(3)}));
+        jest.spyOn(repository, 'delete').mockResolvedValue();
+        
         const useCase: DeleteOffensiveWordUseCase = Container.get(DeleteOffensiveWordUseCase);
         await useCase.execute('eecfe194-5d2e-4940-b69e-71050257df02');
         expect(repository.delete).toHaveBeenCalled();

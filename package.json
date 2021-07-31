@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc --build tsconfig.json",
     "build:watch": "tsc --build tsconfig.json --watch",
-    "test": "jest --coverage --forceExit",
+    "test": "jest --coverage",
     "lint": "eslint ./src --ext .ts",
     "start": "nodemon --watch dist dist/server.js"
   },

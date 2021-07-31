@@ -12,16 +12,16 @@ export class Author {
 
     constructor(private author: AuthorType) {}
 
-    get id(): string {
-        return this.author.id.value;
+    get id(): IdVO {
+        return this.author.id;
     }
 
-    get name(): string {
-        return this.author.name.value;
+    get name(): NameAuthorVO {
+        return this.author.name;
     }
 
-    get nickname(): string {
-        return this.author.nickname.value;
+    get nickname(): NicknameAuthorVO {
+        return this.author.nickname;
     }
 
 }

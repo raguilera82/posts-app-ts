@@ -16,16 +16,16 @@ export class Post {
 
     constructor(private post: PostType) {}
 
-    get id(): string {
-        return this.post.id.value;
+    get id(): IdVO {
+        return this.post.id;
     }
 
-    get title(): string {
-        return this.post.title.value;
+    get title(): TitleVO {
+        return this.post.title;
     }
 
-    get content(): string {
-        return this.post.content.value;
+    get content(): ContentVO {
+        return this.post.content;
     }
 
     get author(): Author {

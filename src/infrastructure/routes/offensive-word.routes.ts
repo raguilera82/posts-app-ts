@@ -24,7 +24,7 @@ const router = express.Router();
  *         description: Returns a mysterious string.
  */
 router.get('/api/offensive-word', 
-    passport.authenticate('jwt', {session: false}), hasRole(Role.ADMIN),
+    passport.authenticate('jwt', {session: false}), hasRole([Role.ADMIN, Role.USER  ]),
     async (req: express.Request, res: express.Response) => {
         const useCase = Container.get(GetAllOffensiveWordsUseCase);
         const offensiveWords: OffensiveWordResponse[] = await useCase.execute();

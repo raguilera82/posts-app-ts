@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-
+import { AuthorRepositoryMongo } from './infrastructure/repositories/author.repository.mongo';
 import express from 'express';
 import { json } from 'body-parser';
 import { offensiveWordRouter } from './infrastructure/routes/offensive-word.routes';
@@ -11,8 +11,10 @@ import passport from 'passport';
 import passportMiddleware from './infrastructure/middlewares/passport';
 import swaggerUI from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
+import { authorsRouter } from './infrastructure/routes/author.routes';
 
 Container.set('OffensiveWordRepository', new OffensiveWordRepositoryMongo());
+Container.set('AuthorRepository', new AuthorRepositoryMongo());
 Container.set('UserRepository', new UserRepositoryPG());
 
 console.log('App started');
@@ -21,6 +23,7 @@ const app = express();
 app.use(json());
 app.use(offensiveWordRouter);
 app.use(authRouter);
+app.use(authorsRouter);
 
 app.use(passport.initialize());
 passport.use(passportMiddleware);

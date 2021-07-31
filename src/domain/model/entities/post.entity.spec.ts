@@ -29,6 +29,7 @@ describe('Post', () => {
                   and typesetting industry.`);
 
         const commentType: CommentType = {
+            id: IdVO.create(),
             content: ContentCommentVO.create('Mi comentario sobre el post'),
             nickname: NicknameAuthorVO.create('raguilera'),
             timestamp: TimestampVO.create()
@@ -45,17 +46,17 @@ describe('Post', () => {
         const post = new Post(postData);
         post.addComment(comment);
 
-        expect(idPost.value).toEqual(post.id);
-        expect(titlePost.value).toEqual(post.title);
-        expect(content.value).toEqual(post.content);
+        expect(idPost.value).toEqual(post.id.value);
+        expect(titlePost.value).toEqual(post.title.value);
+        expect(content.value).toEqual(post.content.value);
         
-        expect(idAuthor.value).toEqual(post.author.id);
-        expect(nameAuthor.value).toEqual(post.author.name);
-        expect(nicknameAuthor.value).toEqual(post.author.nickname);
+        expect(idAuthor.value).toEqual(post.author.id.value);
+        expect(nameAuthor.value).toEqual(post.author.name.value);
+        expect(nicknameAuthor.value).toEqual(post.author.nickname.value);
 
-        expect(post.comments[0].content).toEqual(comment.content);
-        expect(post.comments[0].nickname).toEqual(comment.nickname);
-        expect(post.comments[0].timestamp).toEqual(comment.timestamp);
+        expect(post.comments[0].content.value).toEqual(comment.content.value);
+        expect(post.comments[0].nickname.value).toEqual(comment.nickname.value);
+        expect(post.comments[0].timestamp.value).toEqual(comment.timestamp.value);
         
     });
         
