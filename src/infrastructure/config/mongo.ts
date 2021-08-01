@@ -3,17 +3,20 @@ import mongoose from 'mongoose';
 const connectToDB = async () => {
 
     const mongoOptions: mongoose.ConnectionOptions = {
-        authSource:'admin',
+        authSource: process.env.MONGO_AUTH_SOURCE ?? 'admin',
         auth: {
-            user: 'admin',
-            password: 'admin',
+            user: process.env.MONGO_AUTH_USER ?? 'admin',
+            password: process.env.MONGO_AUTH_PASS ?? 'admin',
         },
         useUnifiedTopology: true,
         useNewUrlParser: true,
         useFindAndModify: false
     };
 
-    await mongoose.connect('mongodb://localhost:27018/blog', mongoOptions);
+    const host = process.env.MONGO_HOST ?? 'localhost';
+    const port = process.env.APP_MONGO_PORT ?? '27018';
+    const dbName = process.env.MONGO_DB ?? 'blog';
+    await mongoose.connect(`mongodb://${host}:${port}/${dbName}`, mongoOptions);
 
     const connection = mongoose.connection;
 

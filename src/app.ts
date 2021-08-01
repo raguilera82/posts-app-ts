@@ -1,5 +1,9 @@
-import { PostRepositoryMongo } from './infrastructure/repositories/post.repository.mongo';
 import 'reflect-metadata';
+
+import { config } from 'dotenv';
+config();
+
+import { PostRepositoryMongo } from './infrastructure/repositories/post.repository.mongo';
 import { AuthorRepositoryMongo } from './infrastructure/repositories/author.repository.mongo';
 import express from 'express';
 import { json } from 'body-parser';
@@ -14,6 +18,7 @@ import swaggerUI from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import { authorsRouter } from './infrastructure/routes/author.routes';
 import { postsRouter } from './infrastructure/routes/posts.routes';
+
 
 Container.set('OffensiveWordRepository', new OffensiveWordRepositoryMongo());
 Container.set('AuthorRepository', new AuthorRepositoryMongo());

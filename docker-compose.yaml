@@ -4,10 +4,10 @@ services:
   mongodb:
     image: mongo:4.2.3-bionic
     ports:
-      - 27018:27017
+      - ${MONGO_PORT_EXTERNAL}:${MONGO_PORT}
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_AUTH_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_AUTH_PASS}
     volumes:
       - ./mongo-entrypoint:/docker-entrypoint-initdb.d
       - mongodb:/data/db
@@ -20,11 +20,11 @@ services:
     volumes:
       - /private/var/lib/postgresql:/var/lib/postgresql
     ports:
-      - "5432:5432"
+      - "${PG_PORT_EXTERNAL}:${PG_PORT}"
     environment:
-      POSTGRES_USER: pguser
-      POSTGRES_PASSWORD: pguser
-      POSTGRES_DB: pgdb
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASS}
+      POSTGRES_DB: ${PG_DB_NAME}
     networks:
       - posts_net
 
