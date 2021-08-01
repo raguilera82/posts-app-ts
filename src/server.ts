@@ -7,6 +7,8 @@ connectToDB();
 
 populateDatabases();
 
-app.listen(3000, () => {
-    console.log('Server started');
+const port = process.env.APP_PORT ?? 3000;
+
+app.listen(port, () => {
+    console.log(`Server started on ${port}`);
 });
