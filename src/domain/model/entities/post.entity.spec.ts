@@ -2,7 +2,7 @@ import { ContentCommentVO } from '../vos/content-comment.vo';
 import { ContentVO } from '../vos/content.vo';
 import { IdVO } from '../vos/id.vo';
 import { NameAuthorVO } from '../vos/name-author.vo';
-import { NicknameAuthorVO } from '../vos/nickname-author.vo';
+import { NicknameVO } from '../vos/nickname.vo';
 import { TimestampVO } from '../vos/timestamp.vo';
 import { TitleVO } from '../vos/title.vo';
 import { AuthorType, Author } from './author.entity';
@@ -16,7 +16,7 @@ describe('Post', () => {
 
         const idAuthor: IdVO = IdVO.create();
         const nameAuthor = NameAuthorVO.create('Ruben Aguilera');
-        const nicknameAuthor = NicknameAuthorVO.create('raguilera');
+        const nicknameAuthor = NicknameVO.create('raguilera');
         const authorType: AuthorType = {
             id: idAuthor,
             name: nameAuthor,
@@ -31,7 +31,7 @@ describe('Post', () => {
         const commentType: CommentType = {
             id: IdVO.create(),
             content: ContentCommentVO.create('Mi comentario sobre el post'),
-            nickname: NicknameAuthorVO.create('raguilera'),
+            nickname: NicknameVO.create('raguilera'),
             timestamp: TimestampVO.create()
         };
         const comment: Comment = new Comment(commentType);

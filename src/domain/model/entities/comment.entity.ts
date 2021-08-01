@@ -1,11 +1,11 @@
-import { NicknameAuthorVO } from './../vos/nickname-author.vo';
+import { NicknameVO } from '../vos/nickname.vo';
 import { IdVO } from './../vos/id.vo';
 import { ContentCommentVO } from '../vos/content-comment.vo';
 import { TimestampVO } from '../vos/timestamp.vo';
 
 export type CommentType = {
     id: IdVO;
-    nickname: NicknameAuthorVO;
+    nickname: NicknameVO;
     content: ContentCommentVO;
     timestamp: TimestampVO;
 }
@@ -18,7 +18,7 @@ export class Comment {
         return this.comment.id;
     }
 
-    get nickname(): NicknameAuthorVO {
+    get nickname(): NicknameVO {
         return this.comment.nickname;
     }
 

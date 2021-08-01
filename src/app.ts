@@ -1,3 +1,4 @@
+import { PostRepositoryMongo } from './infrastructure/repositories/post.repository.mongo';
 import 'reflect-metadata';
 import { AuthorRepositoryMongo } from './infrastructure/repositories/author.repository.mongo';
 import express from 'express';
@@ -16,6 +17,7 @@ import { authorsRouter } from './infrastructure/routes/author.routes';
 Container.set('OffensiveWordRepository', new OffensiveWordRepositoryMongo());
 Container.set('AuthorRepository', new AuthorRepositoryMongo());
 Container.set('UserRepository', new UserRepositoryPG());
+Container.set('PostRepository', new PostRepositoryMongo());
 
 console.log('App started');
 

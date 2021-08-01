@@ -1,7 +1,7 @@
 import { AuthorService } from './../../../domain/services/author.service';
 import { IdVO } from '../../../domain/model/vos/id.vo';
 import { NameAuthorVO } from '../../../domain/model/vos/name-author.vo';
-import { NicknameAuthorVO } from '../../../domain/model/vos/nickname-author.vo';
+import { NicknameVO } from '../../../domain/model/vos/nickname.vo';
 import { Author, AuthorType } from './../../../domain/model/entities/author.entity';
 import { Service } from 'typedi';
 
@@ -15,7 +15,7 @@ export class CreateAuthorUseCase {
         const authorData: AuthorType = {
             id: IdVO.create(),
             name: NameAuthorVO.create(request.name),
-            nickname: NicknameAuthorVO.create(request.nickname)
+            nickname: NicknameVO.create(request.nickname)
         };
 
         const author = new Author(authorData);

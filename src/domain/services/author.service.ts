@@ -1,3 +1,4 @@
+import { NicknameVO } from '../model/vos/nickname.vo';
 import { AuthorRepository } from './../repositories/author.repository';
 import { Inject, Service } from 'typedi';
 import { Author } from '../model/entities/author.entity';
@@ -9,6 +10,10 @@ export class AuthorService {
 
     async create(author: Author): Promise<void> {
         return this.authorRepository.persist(author);
+    }
+
+    async getByNickname(nickname: NicknameVO): Promise<Author | null> {
+        return this.authorRepository.searchByNickname(nickname);
     }
 
 }

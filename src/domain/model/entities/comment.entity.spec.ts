@@ -1,13 +1,13 @@
 import { IdVO } from './../vos/id.vo';
 import { ContentCommentVO } from '../vos/content-comment.vo';
-import { NicknameAuthorVO } from '../vos/nickname-author.vo';
+import { NicknameVO } from '../vos/nickname.vo';
 import { TimestampVO } from '../vos/timestamp.vo';
 import { CommentType, Comment } from './comment.entity';
 
 describe('Comment', () => {
     it ('should create a comment', () => {
         const idComment = IdVO.create();
-        const nicknameAuthor = NicknameAuthorVO.create('raguilera');
+        const nicknameAuthor = NicknameVO.create('raguilera');
         const contentComment = ContentCommentVO.create('Este es el contenido');
         const timestampComment = TimestampVO.create();
 

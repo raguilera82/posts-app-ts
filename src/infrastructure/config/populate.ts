@@ -1,3 +1,7 @@
+import { PostService } from './../../domain/services/post.service';
+import { AddCommentUseCase, AddCommentRequest } from './../../application/usecases/comments/add-comment.usecase';
+import { CreatePostUseCase, CreatePostRequest } from './../../application/usecases/posts/create-post.usecase';
+import { AuthorService } from './../../domain/services/author.service';
 import { CreateAuthorUseCase } from './../../application/usecases/authors/create-author.usecase';
 import { User, UserType } from './../../domain/model/entities/user.entity';
 import { UserService } from './../../domain/services/user.service';
@@ -9,6 +13,7 @@ import { IdVO } from '../../domain/model/vos/id.vo';
 import { EmailVO } from '../../domain/model/vos/email.vo';
 import { PasswordVO } from '../../domain/model/vos/password.vo';
 import { Role, RoleVO } from '../../domain/model/vos/role.vo';
+import { NicknameVO } from '../../domain/model/vos/nickname.vo';
 
 
 const populate = async (): Promise<void> => {
@@ -20,9 +25,15 @@ const populate = async (): Promise<void> => {
         useCaseCreateOffensiveWord.execute({word: 'App', level: 3});
     }
 
-    const useCaseCreateAuthor = Container.get(CreateAuthorUseCase);
-    await useCaseCreateAuthor.execute({name: 'Prueba', nickname: 'Prueba'});
-
+    const authorService = Container.get(AuthorService);
+    const author = await authorService.getByNickname(NicknameVO.create('Prueba'));
+    console.log('author', author);
+    if (!author) {
+        console.log('Introduzco author');
+        const useCaseCreateAuthor = Container.get(CreateAuthorUseCase);
+        await useCaseCreateAuthor.execute({name: 'Prueba', nickname: 'Prueba'});    
+    }
+    
     const userService = Container.get(UserService);
     const userData: UserType = {
         email: EmailVO.create('hola@kairosds.com'),
@@ -32,6 +43,22 @@ const populate = async (): Promise<void> => {
     };
 
     await userService.persist(new User(userData));
+
+    const createPostUseCase = Container.get(CreatePostUseCase);
+    const createPostRequest: CreatePostRequest = {
+        authorNickname: 'Prueba',
+        content: 'Contenido de prueba Contenido de prueba Contenido de prueba Contenido de prueba Contenido de prueba',
+        title: 'Título de prueba'
+    };
+    const postId = await createPostUseCase.execute(createPostRequest);
+
+    const addCommentUseCase = Container.get(AddCommentUseCase);
+    const addCommentRequest: AddCommentRequest = {
+        postId: postId.id,
+        contentComment: 'Este es el contenido de comentario',
+        nicknameComment: 'cuñado'
+    };
+    await addCommentUseCase.execute(addCommentRequest);
 
 };
 

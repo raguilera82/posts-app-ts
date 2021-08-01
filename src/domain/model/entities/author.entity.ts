@@ -1,11 +1,11 @@
 import { IdVO } from '../vos/id.vo';
 import { NameAuthorVO } from '../vos/name-author.vo';
-import { NicknameAuthorVO } from '../vos/nickname-author.vo';
+import { NicknameVO } from '../vos/nickname.vo';
 
 export type AuthorType = {
     id: IdVO;
     name: NameAuthorVO;
-    nickname: NicknameAuthorVO;
+    nickname: NicknameVO;
 }
 
 export class Author {
@@ -20,7 +20,7 @@ export class Author {
         return this.author.name;
     }
 
-    get nickname(): NicknameAuthorVO {
+    get nickname(): NicknameVO {
         return this.author.nickname;
     }
 
