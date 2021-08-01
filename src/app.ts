@@ -13,6 +13,7 @@ import passportMiddleware from './infrastructure/middlewares/passport';
 import swaggerUI from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import { authorsRouter } from './infrastructure/routes/author.routes';
+import { postsRouter } from './infrastructure/routes/posts.routes';
 
 Container.set('OffensiveWordRepository', new OffensiveWordRepositoryMongo());
 Container.set('AuthorRepository', new AuthorRepositoryMongo());
@@ -26,6 +27,7 @@ app.use(json());
 app.use(offensiveWordRouter);
 app.use(authRouter);
 app.use(authorsRouter);
+app.use(postsRouter);
 
 app.use(passport.initialize());
 passport.use(passportMiddleware);

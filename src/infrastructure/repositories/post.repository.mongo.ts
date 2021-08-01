@@ -61,7 +61,12 @@ export class PostRepositoryMongo implements PostRepository {
 
     async addComment(post: Post, comment: Comment): Promise<void> {
         await PostModel.findOneAndUpdate({id: post.id.value}, {'$push': {
-            comments: {comment}
+            comments: {
+                id: comment.id.value,
+                nickname: comment.nickname.value,
+                content: comment.content.value,
+                timestamp: comment.timestamp.value
+            }
         }}).exec();
     }
     
