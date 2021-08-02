@@ -34,6 +34,7 @@ router.get('/api/offensive-word',
 router.post('/api/offensive-word', 
     body('word').notEmpty().escape(), 
     body('level').notEmpty().isNumeric(), 
+    passport.authenticate('jwt', {session: false}), hasRole([Role.ADMIN]),
     async (req: express.Request, res: express.Response) => {
 
         const errors = validationResult(req);

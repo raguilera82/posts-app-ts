@@ -55,6 +55,10 @@ export class OffensiveWordRepositoryMongo implements OffensiveWordRepository {
         await OffensiveWordModel.findOneAndRemove({id: id.value});
     }
 
+    async deleteAll(): Promise<void> {
+        await OffensiveWordModel.deleteMany({});
+    }
+
     
 
 }

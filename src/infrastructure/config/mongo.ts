@@ -30,8 +30,8 @@ const connectToDB = async () => {
     });
 };
 
-const disconnectDB = (callback: any) => {
-    mongoose.disconnect(callback);
+const disconnectDB = () => {
+    mongoose.disconnect();
 };
 
 export { connectToDB, disconnectDB };

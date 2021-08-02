@@ -90,6 +90,11 @@ export class UserRepositoryPG implements UserRepository {
         });
     }
 
-    
+    async deleteAll(): Promise<void> {
+        await UserModel.destroy({
+            where: {},
+            truncate: true
+        });
+    }
 
 }

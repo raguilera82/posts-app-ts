@@ -36,7 +36,7 @@ const populate = async (): Promise<void> => {
     
     const userService = Container.get(UserService);
     const userData: UserType = {
-        email: EmailVO.create('hola@kairosds.com'),
+        email: EmailVO.create('admin@example.org'),
         password: PasswordVO.create('password'),
         id: IdVO.create(),
         role: RoleVO.create(Role.ADMIN)
