@@ -13,7 +13,7 @@ import { EmailVO } from '../../src/domain/model/vos/email.vo';
 import { IdVO } from '../../src/domain/model/vos/id.vo';
 import { PasswordVO } from '../../src/domain/model/vos/password.vo';
 import { RoleVO, Role } from '../../src/domain/model/vos/role.vo';
-import './../../src/infrastructure/config/postgresql';
+import sequelize from './../../src/infrastructure/config/postgresql';
 
 describe('Offensive word', () => {
 
@@ -61,6 +61,7 @@ describe('Offensive word', () => {
         disconnectDB();
         const repoUser: UserRepository = Container.get('UserRepository');
         await repoUser.deleteAll();
+        await sequelize.close();
     });
 
 });
