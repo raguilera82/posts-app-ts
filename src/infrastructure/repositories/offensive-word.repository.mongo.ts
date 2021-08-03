@@ -32,13 +32,17 @@ export class OffensiveWordRepositoryMongo implements OffensiveWordRepository {
             return null;
         }
 
-        const offensiveWordData: OffensiveWordType = {
-            id: IdVO.createWithUUID(offensiveWordDB.id),
-            word: WordVO.create(offensiveWordDB.word),
-            level: LevelVO.create(offensiveWordDB.level)
-        };
+        return this.createOffensiveWord(offensiveWordDB);
+    }
 
-        return new OffensiveWord(offensiveWordData);
+    async getByWord(word: WordVO): Promise<OffensiveWord | null> {
+        const offensiveWordDB = await OffensiveWordModel.findOne({word: word.value}).exec();
+
+        if (!offensiveWordDB) {
+            return null;
+        }
+
+        return this.createOffensiveWord(offensiveWordDB);
     }
     
     async save(offensiveWord: OffensiveWord): Promise<void> {
@@ -57,6 +61,16 @@ export class OffensiveWordRepositoryMongo implements OffensiveWordRepository {
 
     async deleteAll(): Promise<void> {
         await OffensiveWordModel.deleteMany({});
+    }
+
+    private createOffensiveWord(offensiveWordDB: any) {
+        const offensiveWordData: OffensiveWordType = {
+            id: IdVO.createWithUUID(offensiveWordDB.id),
+            word: WordVO.create(offensiveWordDB.word),
+            level: LevelVO.create(offensiveWordDB.level)
+        };
+
+        return new OffensiveWord(offensiveWordData);
     }
 
     
