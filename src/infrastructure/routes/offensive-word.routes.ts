@@ -18,10 +18,10 @@ const router = express.Router();
  * @openapi
  * /offensive-word:
  *   get:
- *     description: Welcome to swagger-jsdoc!
+ *     description: Get all offensive words
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Returns all offensive words.
  */
 router.get('/api/offensive-word', 
     passport.authenticate('jwt', {session: false}), hasRole([Role.ADMIN, Role.USER  ]),
