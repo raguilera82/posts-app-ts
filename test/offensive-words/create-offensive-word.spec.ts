@@ -17,15 +17,12 @@ import sequelize from './../../src/infrastructure/config/postgresql';
 
 describe('Offensive word', () => {
 
-    let server: request.SuperTest<request.Test>;
+    const server: request.SuperTest<request.Test> = request(app);
+    let adminToken = '';
 
     beforeAll(async () => {
         await connectToDB();
-        const repo: OffensiveWordRepository = Container.get('OffensiveWordRepository');
-        await repo.deleteAll();
-    });
-
-    it('should create', async () => {
+        await sequelize.authenticate();
 
         const userService = Container.get(UserService);
         const userData: UserType = {
@@ -37,18 +34,24 @@ describe('Offensive word', () => {
 
         await userService.persist(new User(userData));
 
-        server = request(app);
-
         const responseLogin = await server.post('/api/login').type('application/json').send({email: 'admin@example.org', password: 'password'});
-        const {token} = responseLogin.body;
-        logger.info(token);
+        adminToken = responseLogin.body.token;
+        logger.info(adminToken);
+    });
+
+    afterEach(async () => {
+        const repo: OffensiveWordRepository = Container.get('OffensiveWordRepository');
+        await repo.deleteAll();
+    });
+
+    it('should create', async () => {
 
         const newOffensiveWord = {
             word: 'Supertest',
             level: 3
         };
         const response = await server.post('/api/offensive-word').type('application/json')
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', `Bearer ${adminToken}`)
             .send(newOffensiveWord).expect(201);
         const { id } = response.body as OffensiveWordResponse;
         logger.info(id);
