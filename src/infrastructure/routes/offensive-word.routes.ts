@@ -24,7 +24,7 @@ const router = express.Router();
  *         description: Returns all offensive words.
  */
 router.get('/api/offensive-word', 
-    passport.authenticate('jwt', {session: false}), hasRole([Role.ADMIN, Role.USER  ]),
+    passport.authenticate('jwt', {session: false}), hasRole([Role.ADMIN]),
     async (req: express.Request, res: express.Response) => {
         const useCase = Container.get(GetAllOffensiveWordsUseCase);
         const offensiveWords: OffensiveWordResponse[] = await useCase.execute();
@@ -52,37 +52,41 @@ router.post('/api/offensive-word',
         return res.status(201).send(offensiveWordResponse);
     });
 
-router.delete('/api/offensive-word/:id', async (req, res) => {
-    try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+router.delete('/api/offensive-word/:id', 
+    passport.authenticate('jwt', {session: false}), hasRole([Role.ADMIN]),
+    async (req, res) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
+            const idDelete: IdRequest = req.params?.id;
+            const useCase = Container.get(DeleteOffensiveWordUseCase);
+            await useCase.execute(idDelete);
+            return res.send('Deleted!');
+
+        }catch(err) {
+            return res.status(err.code).json({error: err.message});
         }
+    });
 
-        const idDelete: IdRequest = req.params?.id;
-        const useCase = Container.get(DeleteOffensiveWordUseCase);
-        await useCase.execute(idDelete);
-        return res.send('Deleted!');
+router.put('/api/offensive-word/:id', 
+    passport.authenticate('jwt', {session: false}), hasRole([Role.ADMIN]),
+    async (req, res) => {
+        try {
 
-    }catch(err) {
-        return res.status(err.code).json({error: err.message});
-    }
-});
+            const idUpdate: IdRequest = req.params.id;
+            const { word, level } = req.body;
+            const offensiveWordRequest: OffensiveWordRequest = {word, level};
+            const useCase = Container.get(UpdateOffensiveWordUseCase);
+            await useCase.execute(idUpdate, offensiveWordRequest);
+            return res.send('Updated!');
 
-router.put('/api/offensive-word/:id', async (req, res) => {
-    try {
-
-        const idUpdate: IdRequest = req.params.id;
-        const { word, level } = req.body;
-        const offensiveWordRequest: OffensiveWordRequest = {word, level};
-        const useCase = Container.get(UpdateOffensiveWordUseCase);
-        await useCase.execute(idUpdate, offensiveWordRequest);
-        return res.send('Updated!');
-
-    }catch(err) {
-        return res.status(err.code).json({error: err.message});
-    }
+        }catch(err) {
+            return res.status(err.code).json({error: err.message});
+        }
     
-});
+    });
 
 export { router as offensiveWordRouter };

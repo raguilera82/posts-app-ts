@@ -2,6 +2,9 @@ import { CreatePostUseCase, CreatePostRequest } from './../../application/usecas
 import { body, validationResult } from 'express-validator';
 import express from 'express';
 import { Container } from 'typedi';
+import { Role } from '../../domain/model/vos/role.vo';
+import { hasRole } from '../middlewares/roles';
+import passport from 'passport';
 
 const router = express.Router();
 
@@ -9,6 +12,7 @@ router.post('/api/posts',
     body('title').notEmpty(),
     body('content').notEmpty(),
     body('authorNickname').notEmpty(),
+    passport.authenticate('jwt', {session: false}), hasRole([Role.PUBLISHER, Role.ADMIN]),
     async(req: express.Request, res: express.Response) => {
 
         try {

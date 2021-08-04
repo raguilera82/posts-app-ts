@@ -16,4 +16,6 @@ export interface PostRepository {
 
     addComment(post: Post, comment: Comment): Promise<void>;
 
+    deleteAll(): Promise<void>;
+
 }

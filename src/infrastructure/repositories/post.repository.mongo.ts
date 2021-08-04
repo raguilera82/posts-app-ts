@@ -77,4 +77,8 @@ export class PostRepositoryMongo implements PostRepository {
     update(post: Post): Promise<void> {
         throw new Error('Method not implemented.');
     }
+
+    async deleteAll(): Promise<void> {
+        await PostModel.deleteMany({});
+    }
 }

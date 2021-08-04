@@ -35,4 +35,12 @@ export class AuthorRepositoryMongo implements AuthorRepository {
         await authorModel.save();
     }
 
+    async deleteById(id: IdVO): Promise<void> {
+        await AuthorModel.findOneAndDelete({id: id.value});
+    }
+
+    async deleteAll(): Promise<void> {
+        await AuthorModel.deleteMany({});
+    }
+
 }

@@ -17,7 +17,7 @@ export class SignUpUseCase {
             id: IdVO.create(),
             email: EmailVO.create(request.email),
             password: PasswordVO.create(request.password),
-            role: RoleVO.create(Role.USER)
+            role: RoleVO.create(Role.PUBLISHER)
         };
         await this.userService.persist(new User(user));
     }

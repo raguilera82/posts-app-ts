@@ -1,3 +1,4 @@
+import { logger } from './../../../infrastructure/config/logger';
 import { ExceptionWithCode } from './../../../domain/model/exception-with-code';
 import { NicknameVO } from '../../../domain/model/vos/nickname.vo';
 import { AuthorService } from './../../../domain/services/author.service';
@@ -14,6 +15,8 @@ export class CreatePostUseCase {
     constructor(private postService: PostService, private authorService: AuthorService) {}
 
     async execute(request: CreatePostRequest): Promise<CreatePostResponse> {
+
+        logger.debug(JSON.stringify(request));
 
         const author = await this.authorService.getByNickname(NicknameVO.create(request.authorNickname));
         console.log(author);
