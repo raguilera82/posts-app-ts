@@ -1,3 +1,4 @@
+import { logger } from './../../infrastructure/config/logger';
 import { IdVO } from './../model/vos/id.vo';
 import { NicknameVO } from '../model/vos/nickname.vo';
 import { AuthorRepository } from './../repositories/author.repository';
@@ -10,7 +11,8 @@ export class AuthorService {
     constructor(@Inject('AuthorRepository') private authorRepository: AuthorRepository) {}
 
     async create(author: Author): Promise<void> {
-        return this.authorRepository.persist(author);
+        logger.debug(`Save author ${JSON.stringify(author)}`);
+        await this.authorRepository.persist(author);
     }
 
     async getByNickname(nickname: NicknameVO): Promise<Author | null> {

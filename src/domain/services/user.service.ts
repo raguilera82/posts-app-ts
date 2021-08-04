@@ -7,6 +7,7 @@ import { IdVO } from '../model/vos/id.vo';
 import { PasswordVO } from '../model/vos/password.vo';
 import { UserRepository } from '../repositories/user.repository';
 import bcrypt from 'bcrypt';
+import { logger } from '../../infrastructure/config/logger';
 
 @Service()
 export class UserService {
@@ -26,6 +27,7 @@ export class UserService {
             password: encryptPassword,
             role: user.role
         };
+        logger.debug(`Save user ${JSON.stringify(newUser)}`)
         await this.userRepository.save(new User(newUser));
     }
 
