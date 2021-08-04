@@ -49,22 +49,32 @@ describe('Offensive word', () => {
         await repo.deleteAll();
     });
 
-    it('should create', async () => {
+    describe('create', () => {
+        it('should create', async () => {
 
-        const newOffensiveWord = {
-            word: 'Supertest',
-            level: 3
-        };
-        const response = await server.post('/api/offensive-word').type('application/json')
-            .set('Authorization', `Bearer ${adminToken}`)
-            .send(newOffensiveWord).expect(201);
-        const { id } = response.body as OffensiveWordResponse;
+            const newOffensiveWord = {
+                word: 'Supertest',
+                level: 3
+            };
+            const response = await server.post('/api/offensive-word').type('application/json')
+                .set('Authorization', `Bearer ${adminToken}`)
+                .send(newOffensiveWord).expect(201);
+            const { id } = response.body as OffensiveWordResponse;
 
-        const offensiveWord = await repoOffensiveWord.getByWord(WordVO.create(newOffensiveWord.word));
-        expect(offensiveWord?.id.value).toEqual(id);
-        expect(offensiveWord?.level.value).toBe(newOffensiveWord.level);
-        expect(offensiveWord?.word.value).toEqual(newOffensiveWord.word);
+            const offensiveWord = await repoOffensiveWord.getByWord(WordVO.create(newOffensiveWord.word));
+            expect(offensiveWord?.id.value).toEqual(id);
+            expect(offensiveWord?.level.value).toBe(newOffensiveWord.level);
+            expect(offensiveWord?.word.value).toEqual(newOffensiveWord.word);
+        });
+
+        it('should not create because error, word not empty', async () => {
+
+            await server.post('/api/offensive-word').type('application/json')
+                .set('Authorization', `Bearer ${adminToken}`)
+                .send({level: 3}).expect(400);
+        });
     });
+    
 
     it('should update', async () => {
 
@@ -88,6 +98,46 @@ describe('Offensive word', () => {
         expect(updateOffensiveWord?.word.value).toEqual(newWord);
         expect(updateOffensiveWord?.level.value).toEqual(newLevel);
 
+    });
+
+    it('should delete', async () => {
+
+        const id = IdVO.create();
+
+        const newOffensiveWord: OffensiveWordType = {
+            id,
+            word: WordVO.create('Supertest'),
+            level: LevelVO.create(3)
+        };
+        repoOffensiveWord.save(new OffensiveWord(newOffensiveWord));
+
+        await server.delete(`/api/offensive-word/${id.value}`).type('application/json')
+            .set('Authorization', `Bearer ${adminToken}`).expect(200);
+
+        const deleteOffensiveWord = await repoOffensiveWord.getById(id);
+        expect(deleteOffensiveWord).toBe(null);
+
+    });
+
+    it('should get all', async() => {
+        await server.post('/api/offensive-word').type('application/json')
+            .set('Authorization', `Bearer ${adminToken}`)
+            .send({word: 'Caca', level: 3}).expect(201);
+
+        await server.post('/api/offensive-word').type('application/json')
+            .set('Authorization', `Bearer ${adminToken}`)
+            .send({word: 'Culo', level: 1}).expect(201);
+
+        await server.post('/api/offensive-word').type('application/json')
+            .set('Authorization', `Bearer ${adminToken}`)
+            .send({word: 'Pedo', level: 5}).expect(201);
+
+        const response = await server.get('/api/offensive-word').type('application/json')
+            .set('Authorization', `Bearer ${adminToken}`).expect(200);
+
+        const words = response.body;
+        expect(words.length).toBe(3);
+        expect(words[0].word).toEqual('Caca');
     });
     
     afterAll(async () => {
