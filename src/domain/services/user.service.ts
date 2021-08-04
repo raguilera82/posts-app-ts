@@ -27,7 +27,7 @@ export class UserService {
             password: encryptPassword,
             role: user.role
         };
-        logger.debug(`Save user ${JSON.stringify(newUser)}`)
+        logger.debug(`Save user ${JSON.stringify(newUser)}`);
         await this.userRepository.save(new User(newUser));
     }
 
