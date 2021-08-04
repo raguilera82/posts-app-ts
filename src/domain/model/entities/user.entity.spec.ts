@@ -11,7 +11,7 @@ describe('User', () => {
             id: IdVO.create(),
             email: EmailVO.create('hola@hola.com'),
             password: PasswordVO.create('password'),
-            role: RoleVO.create(Role.USER)
+            role: RoleVO.create(Role.PUBLISHER)
         };
 
         const user = new User(userData);
