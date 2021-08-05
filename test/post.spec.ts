@@ -1,27 +1,17 @@
-import { UserRepository } from './../src/domain/repositories/user.repository';
+import { createAuthor } from './helpers/author';
 import 'reflect-metadata';
 
-import { Role, RoleVO } from './../src/domain/model/vos/role.vo';
-import { User, UserType } from './../src/domain/model/entities/user.entity';
-import { UserService } from './../src/domain/services/user.service';
 
-
+import { getPublisherToken } from './helpers/auth';
+import { UserRepository } from './../src/domain/repositories/user.repository';
 import { AuthorRepository } from './../src/domain/repositories/author.repository';
 import { PostRepository } from './../src/domain/repositories/post.repository';
-import { Author, AuthorType } from './../src/domain/model/entities/author.entity';
-
-import { AuthorService } from './../src/domain/services/author.service';
 import { Container } from 'typedi';
 
 import supertest from 'supertest';
 import app from '../src/app';
 import { connectToDB, disconnectDB } from '../src/infrastructure/config/mongo';
 import sequelize from '../src/infrastructure/config/postgresql';
-import { IdVO } from '../src/domain/model/vos/id.vo';
-import { NameAuthorVO } from '../src/domain/model/vos/name-author.vo';
-import { NicknameVO } from '../src/domain/model/vos/nickname.vo';
-import { PasswordVO } from '../src/domain/model/vos/password.vo';
-import { EmailVO } from '../src/domain/model/vos/email.vo';
 
 describe('Posts', () => {
 
@@ -31,20 +21,7 @@ describe('Posts', () => {
     beforeAll(async () => {
         await connectToDB();
         await sequelize.authenticate();
-
-        const userService: UserService = Container.get(UserService);
-        const userData: UserType = {
-            id: IdVO.create(),
-            email: EmailVO.create('publisher@example.org'),
-            password: PasswordVO.create('password'),
-            role: RoleVO.create(Role.PUBLISHER)
-        };
-        await userService.persist(new User(userData));
-
-        const responseLogin = await server.post('/api/login').type('application/json')
-            .send({email: 'publisher@example.org', password: 'password'}).expect(200);
-        publisherToken = responseLogin.body.token;
-
+        publisherToken = await getPublisherToken();
     });
 
     afterEach(async () => {
@@ -58,14 +35,7 @@ describe('Posts', () => {
     describe('Create', () => {
         it('should create post', async () => {
 
-            const authorService = Container.get(AuthorService);
-            const idAuthor = IdVO.create();
-            const authorData: AuthorType = {
-                id: idAuthor,
-                name: NameAuthorVO.create('Miguel de Cervantes'),
-                nickname: NicknameVO.create('Cervantes')
-            };
-            await authorService.create(new Author(authorData));
+            await createAuthor();
 
             const createPostRequest = {
                 authorNickname: 'Cervantes',

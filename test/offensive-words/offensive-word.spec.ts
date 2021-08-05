@@ -1,3 +1,4 @@
+import { getAdminToken } from './../helpers/auth';
 import { UserRepository } from '../../src/domain/repositories/user.repository';
 import { OffensiveWordRepository } from '../../src/domain/repositories/offensive-word.repository';
 import { Container } from 'typedi';
@@ -29,19 +30,7 @@ describe('Offensive word', () => {
 
         repoOffensiveWord = Container.get('OffensiveWordRepository');
 
-        const userService = Container.get(UserService);
-        const userData: UserType = {
-            email: EmailVO.create('admin@example.org'),
-            password: PasswordVO.create('password'),
-            id: IdVO.create(),
-            role: RoleVO.create(Role.ADMIN)
-        };
-
-        await userService.persist(new User(userData));
-
-        const responseLogin = await server.post('/api/login').type('application/json').send({email: 'admin@example.org', password: 'password'});
-        adminToken = responseLogin.body.token;
-        logger.info(adminToken);
+        adminToken = await getAdminToken();
     });
 
     afterEach(async () => {

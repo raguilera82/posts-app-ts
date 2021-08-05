@@ -10,23 +10,32 @@ import { RoleVO, Role } from '../../src/domain/model/vos/role.vo';
 import { UserService } from '../../src/domain/services/user.service';
 
 export const getAdminToken = async (): Promise<string> => {
-    const userService = Container.get(UserService);
-    const userData: UserType = {
-        email: EmailVO.create('admin@example.org'),
-        password: PasswordVO.create('password'),
-        id: IdVO.create(),
-        role: RoleVO.create(Role.ADMIN)
-    };
+    return getToken('admin@example.org', 'password', Role.ADMIN);
+};
 
-    await userService.persist(new User(userData));
-
-    const server = supertest(app);
-    const responseLogin = await server.post('/api/login').type('application/json')
-        .send({email: 'admin@example.org', password: 'password'});
-    return responseLogin.body.token;
+export const getPublisherToken = async (): Promise<string> => {
+    return getToken('publisher@example.org', 'password', Role.PUBLISHER);
 };
 
 export const resetUsers = async () => {
     const repoUser: UserRepository = Container.get('UserRepository');
     await repoUser.deleteAll();
 };
+
+export const getToken = async (email: string, pass: string, role: Role): Promise<string> => {
+    const userService = Container.get(UserService);
+    const userData: UserType = {
+        email: EmailVO.create(email),
+        password: PasswordVO.create(pass),
+        id: IdVO.create(),
+        role: RoleVO.create(role)
+    };
+
+    await userService.persist(new User(userData));
+
+    const server = supertest(app);
+    const responseLogin = await server.post('/api/login').type('application/json')
+        .send({email: email, password: pass});
+    return responseLogin.body.token;
+};
+

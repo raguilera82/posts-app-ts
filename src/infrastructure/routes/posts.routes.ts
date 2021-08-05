@@ -1,3 +1,5 @@
+import { logger } from './../config/logger';
+import { AddCommentUseCase, AddCommentRequest } from './../../application/usecases/comments/add-comment.usecase';
 import { CreatePostUseCase, CreatePostRequest } from './../../application/usecases/posts/create-post.usecase';
 import { body, validationResult } from 'express-validator';
 import express from 'express';
@@ -32,6 +34,40 @@ router.post('/api/posts',
             return res.status(201).json({status: 'Created'});
 
         }catch(err) {
+            return res.status(err.code).json({error: err.message});
+        }
+
+    });
+
+router.put('/api/posts/:idPost/comment', 
+    body('nicknameComment').notEmpty(),
+    body('contentComment').notEmpty(),
+    passport.authenticate('jwt', {session: false}), hasRole([Role.PUBLISHER, Role.ADMIN]),
+    async(req: express.Request, res: express.Response) => {
+
+        try {
+
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
+            const idPost = req.params.idPost;
+            const nicknameComment = req.body.nicknameComment;
+            const contentComment = req.body.contentComment;
+
+            const useCase = Container.get(AddCommentUseCase);
+            const request: AddCommentRequest = {
+                postId: idPost,
+                contentComment,
+                nicknameComment
+            };
+            logger.debug(`LLamo a Add Comment Use Case con ${JSON.stringify(request)}`);
+            await useCase.execute(request);
+            res.status(201).json({status: 'Comment added'});
+
+        }catch(err) {
+            logger.error(err);
             return res.status(err.code).json({error: err.message});
         }
 
