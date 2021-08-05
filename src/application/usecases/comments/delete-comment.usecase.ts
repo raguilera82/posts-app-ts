@@ -20,8 +20,7 @@ export class DeleteCommentUseCase {
         }
 
         const idComment = IdVO.createWithUUID(request.idComment);
-        post.deleteComment(idComment);
-        logger.debug(`After delete comment memory ${JSON.stringify(post)}`);
+        
         await this.postService.deleteComment(post, idComment);
 
     }

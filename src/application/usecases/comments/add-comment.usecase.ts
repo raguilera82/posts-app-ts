@@ -39,8 +39,6 @@ export class AddCommentUseCase {
             timestamp: TimestampVO.create()
         };
 
-        post.addComment(new Comment(commentData));
-
         await this.postService.addComment(post, new Comment(commentData));
 
         return {idComment: idComment.value};

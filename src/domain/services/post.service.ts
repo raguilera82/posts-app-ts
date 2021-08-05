@@ -18,11 +18,13 @@ export class PostService {
     }
 
     async addComment(post: Post, comment: Comment): Promise<void> {
-        return this.postRepository.addComment(post, comment);
+        post.addComment(comment);
+        return this.postRepository.addComment(post);
     }
 
     async deleteComment(post: Post, idComment: IdVO): Promise<void> {
-        return this.postRepository.deleteComment(post, idComment);
+        post.deleteComment(idComment);
+        return this.postRepository.deleteComment(post);
     }
 
 }
