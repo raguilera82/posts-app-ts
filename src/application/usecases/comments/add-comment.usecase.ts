@@ -1,3 +1,4 @@
+import { OffensiveWordService } from './../../../domain/services/offensive-word.service';
 import { logger } from './../../../infrastructure/config/logger';
 import { Author } from './../../../domain/model/entities/author.entity';
 import { AuthorService } from './../../../domain/services/author.service';
@@ -14,7 +15,10 @@ import { Service } from 'typedi';
 @Service()
 export class AddCommentUseCase {
 
-    constructor(private postService: PostService, private authorService: AuthorService) {}
+    constructor(
+        private postService: PostService, 
+        private authorService: AuthorService,
+        private offensiveWordService: OffensiveWordService) {}
 
     async execute(request: AddCommentRequest): Promise<AddCommentResponse> {
 
@@ -30,11 +34,13 @@ export class AddCommentUseCase {
 
         logger.debug(`Nickname author ${author.nickname.value}`);
 
+        const offensiveWords = await this.offensiveWordService.getAll();
+
         const idComment = IdVO.create();
 
         const commentData: CommentType = {
             id: idComment,
-            content: ContentCommentVO.create(request.contentComment),
+            content: ContentCommentVO.create(request.contentComment, offensiveWords),
             nickname: author.nickname,
             timestamp: TimestampVO.create()
         };

@@ -1,5 +1,7 @@
-import { logger } from './../src/infrastructure/config/logger';
+import { OffensiveWordRepository } from './../src/domain/repositories/offensive-word.repository';
 import 'reflect-metadata';
+import { addOffensiveWords } from './helpers/offensive-word';
+import { logger } from './../src/infrastructure/config/logger';
 
 import { createPost } from './helpers/posts';
 import { createAuthor } from './helpers/author';
@@ -44,6 +46,24 @@ describe('Comments', () => {
 
     });
 
+    it('publisher should not add commment to post with offensive word', async() => {
+
+        await addOffensiveWords();
+
+        await createAuthor();
+
+        const idPost = await createPost();
+
+        const nicknameComment = 'Cervantes';
+        const contentComment = 'Me ha parecido una obra de Caca absoluta en la historia de la literatura, enhorabuena al autor, creo que me suena.';
+
+        await server.put(`/api/posts/${idPost}/comment`).type('application/json')
+            .set('Authorization', `Bearer ${publisherToken}`)
+            .send({nicknameComment, contentComment})
+            .expect(400);
+
+    });
+
     it('admin should add commment to post', async() => {
 
         await createAuthor();
@@ -83,13 +103,15 @@ describe('Comments', () => {
 
     });
 
-    
     afterEach(async () => {
         const repoPosts: PostRepository = Container.get('PostRepository');
         await repoPosts.deleteAll();
 
         const repoAuthor: AuthorRepository = Container.get('AuthorRepository');
         await repoAuthor.deleteAll();
+
+        const repoOffensiveWord: OffensiveWordRepository = Container.get('OffensiveWordRepository');
+        await repoOffensiveWord.deleteAll();
     });
 
     afterAll(async () => {

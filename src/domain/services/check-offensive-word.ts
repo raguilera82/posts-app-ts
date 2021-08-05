@@ -6,7 +6,7 @@ export const checkOffensiveWords = (content: string, offensiveWords: OffensiveWo
     let offensiveWordsFound: OffensiveWord[] = [];
 
     words.forEach(word => {
-        const maybeOW = offensiveWords.find(ow => ow.word.value === word && ow.level.value <= level);
+        const maybeOW = offensiveWords.find(ow => ow.word.value.toLocaleLowerCase() === word && ow.level.value <= level);
         if (maybeOW) {
             offensiveWordsFound = [...offensiveWordsFound, maybeOW];
         }
