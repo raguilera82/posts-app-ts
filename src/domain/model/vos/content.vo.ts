@@ -1,6 +1,3 @@
-import { logger } from './../../../infrastructure/config/logger';
-import { OffensiveWord } from './../entities/offensive-word.entity';
-import { checkOffensiveWords } from './../../services/check-offensive-word';
 import { ExceptionWithCode } from './../exception-with-code';
 export class ContentVO {
 

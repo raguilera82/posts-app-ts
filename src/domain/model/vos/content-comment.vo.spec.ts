@@ -1,6 +1,5 @@
 import { OffensiveWordType, OffensiveWord } from '../entities/offensive-word.entity';
 import { ContentCommentVO } from './content-comment.vo';
-import { ContentVO } from './content.vo';
 import { IdVO } from './id.vo';
 import { LevelVO } from './level.vo';
 import { WordVO } from './word.vo';

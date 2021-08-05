@@ -1,6 +1,5 @@
 import { AnyObject } from 'mongoose';
 import { OffensiveWord, OffensiveWordType } from '../../domain/model/entities/offensive-word.entity';
-import { ExceptionWithCode } from '../../domain/model/exception-with-code';
 import { IdVO } from '../../domain/model/vos/id.vo';
 import { LevelVO } from '../../domain/model/vos/level.vo';
 import { WordVO } from '../../domain/model/vos/word.vo';

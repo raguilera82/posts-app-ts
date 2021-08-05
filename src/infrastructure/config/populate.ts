@@ -1,4 +1,3 @@
-import { PostService } from './../../domain/services/post.service';
 import { AddCommentUseCase, AddCommentRequest } from './../../application/usecases/comments/add-comment.usecase';
 import { CreatePostUseCase, CreatePostRequest } from './../../application/usecases/posts/create-post.usecase';
 import { AuthorService } from './../../domain/services/author.service';

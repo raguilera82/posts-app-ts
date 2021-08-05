@@ -1,4 +1,4 @@
-import { Role, RoleVO } from './../model/vos/role.vo';
+import { RoleVO } from './../model/vos/role.vo';
 import { Inject, Service } from 'typedi';
 import { User, UserType } from '../model/entities/user.entity';
 import { ExceptionWithCode } from '../model/exception-with-code';

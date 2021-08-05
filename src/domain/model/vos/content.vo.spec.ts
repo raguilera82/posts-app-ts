@@ -1,8 +1,4 @@
-import { OffensiveWord, OffensiveWordType } from './../entities/offensive-word.entity';
 import { ContentVO } from './content.vo';
-import { IdVO } from './id.vo';
-import { LevelVO } from './level.vo';
-import { WordVO } from './word.vo';
 
 describe('Content VO' , () => {
     it('shoud error when content is too long', () => {

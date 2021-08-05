@@ -1,4 +1,4 @@
-import { Role, RoleVO } from './../../domain/model/vos/role.vo';
+import { RoleVO } from './../../domain/model/vos/role.vo';
 import { User, UserType } from '../../domain/model/entities/user.entity';
 import { EmailVO } from '../../domain/model/vos/email.vo';
 import { IdVO } from '../../domain/model/vos/id.vo';
@@ -9,7 +9,7 @@ import { UserModel } from './user.schema';
 export class UserRepositoryPG implements UserRepository {
 
     async getByEmail(email: EmailVO): Promise<User | null> {
-        const userDB: any = await UserModel.findOne({where: {
+        const userDB:any = await UserModel.findOne({where: {
             email: email.value}
         });
 
