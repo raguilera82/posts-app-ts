@@ -1,3 +1,4 @@
+import { ExceptionWithCode } from './../exception-with-code';
 export class TitleVO {
 
     private static readonly MIN_LENGTH = 5;
@@ -11,13 +12,13 @@ export class TitleVO {
 
     static create(title: string): TitleVO {
         if (!title) {
-            throw new Error('El título es requerido');
+            throw new ExceptionWithCode(400, 'El título es requerido');
         }
         if (title.length < this.MIN_LENGTH) {
-            throw new Error(`El título no puede ser inferior a ${this.MIN_LENGTH} caracteres`);
+            throw new ExceptionWithCode(400, `El título no puede ser inferior a ${this.MIN_LENGTH} caracteres`);
         }
         if (title.length > this.MAX_LENGTH) {
-            throw new Error(`El título no puede ser superior a ${this.MAX_LENGTH} caracteres`);
+            throw new ExceptionWithCode(400, `El título no puede ser superior a ${this.MAX_LENGTH} caracteres`);
         }
         return new TitleVO(title);
     }

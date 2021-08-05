@@ -1,3 +1,4 @@
+import { ExceptionWithCode } from './../exception-with-code';
 export class ContentCommentVO {
 
     private static readonly MIN_LENGTH = 10;
@@ -12,10 +13,10 @@ export class ContentCommentVO {
     static create(content: string): ContentCommentVO {
         const long = content.length;
         if (content.length < this.MIN_LENGTH) {
-            throw new Error(`Te faltan ${this.MIN_LENGTH - long} caracteres`);
+            throw new ExceptionWithCode(400, `Te faltan ${this.MIN_LENGTH - long} caracteres`);
         }
         if (content.length > this.MAX_LENGTH) {
-            throw new Error(`Te sobran ${long - this.MAX_LENGTH} caracteres`);
+            throw new ExceptionWithCode(400, `Te sobran ${long - this.MAX_LENGTH} caracteres`);
         }
         return new ContentCommentVO(content);
     }

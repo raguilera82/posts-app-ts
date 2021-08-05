@@ -1,3 +1,4 @@
+import { ExceptionWithCode } from './../exception-with-code';
 export class NameAuthorVO {
 
     private static readonly MIN_LENGTH = 5;
@@ -11,13 +12,13 @@ export class NameAuthorVO {
 
     static create(nameAuthor: string): NameAuthorVO {
         if (!nameAuthor) {
-            throw new Error('El nombre de autor es requerido');
+            throw new ExceptionWithCode(400, 'El nombre de autor es requerido');
         }
         if (nameAuthor.length < this.MIN_LENGTH) {
-            throw new Error(`El nombre de autor no puede ser inferior a ${this.MIN_LENGTH} caracteres`);
+            throw new ExceptionWithCode(400, `El nombre de autor no puede ser inferior a ${this.MIN_LENGTH} caracteres`);
         }
         if (nameAuthor.length > this.MAX_LENGTH) {
-            throw new Error(`El nombre de autor no puede ser superior a ${this.MAX_LENGTH} caracteres`);
+            throw new ExceptionWithCode(400, `El nombre de autor no puede ser superior a ${this.MAX_LENGTH} caracteres`);
         }
         return new NameAuthorVO(nameAuthor);
     }
