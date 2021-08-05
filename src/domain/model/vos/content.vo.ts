@@ -1,3 +1,6 @@
+import { logger } from './../../../infrastructure/config/logger';
+import { OffensiveWord } from './../entities/offensive-word.entity';
+import { checkOffensiveWords } from './../../services/check-offensive-word';
 import { ExceptionWithCode } from './../exception-with-code';
 export class ContentVO {
 
@@ -18,6 +21,7 @@ export class ContentVO {
         if (content.length > ContentVO.MAX_LENGTH) {
             throw new ExceptionWithCode(400, `Te sobran ${long - this.MAX_LENGTH} caracteres`);
         }
+        
         return new ContentVO(content);
     }
 }
