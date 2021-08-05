@@ -1,4 +1,5 @@
-import { Comment } from './../../domain/model/entities/comment.entity';
+import { TimestampVO } from './../../domain/model/vos/timestamp.vo';
+import { Comment, CommentType } from './../../domain/model/entities/comment.entity';
 import { Author, AuthorType } from './../../domain/model/entities/author.entity';
 import { PostType } from './../../domain/model/entities/post.entity';
 import { Post } from '../../domain/model/entities/post.entity';
@@ -9,6 +10,7 @@ import { ContentVO } from '../../domain/model/vos/content.vo';
 import { TitleVO } from '../../domain/model/vos/title.vo';
 import { NameAuthorVO } from '../../domain/model/vos/name-author.vo';
 import { NicknameVO } from '../../domain/model/vos/nickname.vo';
+import { ContentCommentVO } from '../../domain/model/vos/content-comment.vo';
 
 export class PostRepositoryMongo implements PostRepository {
 
@@ -23,7 +25,14 @@ export class PostRepositoryMongo implements PostRepository {
                 name: post.author.name.value,
                 nickname: post.author.nickname.value
             },
-            comments: post.comments
+            comments: post.comments.map(c => {
+                return {
+                    id: c.id.value,
+                    content: c.content.value,
+                    nickname: c.nickname.value,
+                    timestamp: c.timestamp.value
+                }; 
+            })
         };
 
         const postModel = new PostModel(newPost);
@@ -48,34 +57,42 @@ export class PostRepositoryMongo implements PostRepository {
 
         const author = new Author(authorData);
 
+        const comments: Comment[] = postDB.comments.map((dbc:any) => {
+            const commentData: CommentType = {
+                content: ContentCommentVO.create(dbc.content),
+                id: IdVO.createWithUUID(dbc.id),
+                nickname: NicknameVO.create(dbc.nickname),
+                timestamp: TimestampVO.create()
+            };
+            return new Comment(commentData);
+        });
+
         const postData: PostType = {
             id: IdVO.createWithUUID(postDB.id),
             title: TitleVO.create(postDB.title),
             content: ContentVO.create(postDB.content),
             author,
-            comments: postDB.comments
+            comments
         };
 
         return new Post(postData);
     }
 
-    async addComment(post: Post, comment: Comment): Promise<void> {
-        await PostModel.findOneAndUpdate({id: post.id.value}, {'$push': {
-            comments: {
-                id: comment.id.value,
-                nickname: comment.nickname.value,
-                content: comment.content.value,
-                timestamp: comment.timestamp.value
-            }
-        }}).exec();
+    async addComment(post: Post): Promise<void> {
+        await this.update(post);
+    }
+
+    async deleteComment(post: Post): Promise<void> {
+        await this.update(post);
     }
     
-    delete(id: IdVO): Promise<void> {
-        throw new Error('Method not implemented.');
+    async delete(id: IdVO): Promise<void> {
+        await PostModel.findOneAndRemove({id: id.value});
     }
     
-    update(post: Post): Promise<void> {
-        throw new Error('Method not implemented.');
+    async update(post: Post): Promise<void> {
+        await this.delete(post.id);
+        await this.save(post);
     }
 
     async deleteAll(): Promise<void> {

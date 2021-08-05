@@ -60,6 +60,28 @@ describe('Comments', () => {
 
     });
 
+    it('publisher should delete commment to post', async() => {
+
+        await createAuthor();
+
+        const idPost = await createPost();
+
+        const nicknameComment = 'Cervantes';
+        const contentComment = 'Me ha parecido una obra fundamental en la historia de la literatura, enhorabuena al autor, creo que me suena.';
+        logger.debug(`This is postId: ${idPost}`);
+        const response = await server.put(`/api/posts/${idPost}/comment`).type('application/json')
+            .set('Authorization', `Bearer ${publisherToken}`)
+            .send({nicknameComment, contentComment})
+            .expect(201);
+
+        logger.debug(`Response add comment ${JSON.stringify(response.body)}`);
+
+        const idComment = response.body.idComment;
+        await server.delete(`/api/posts/${idPost}/comment/${idComment}`).type('application/json')
+            .set('Authorization', `Bearer ${publisherToken}`)
+            .expect(200);
+
+    });
 
     
     afterEach(async () => {

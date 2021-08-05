@@ -16,7 +16,7 @@ export class AddCommentUseCase {
 
     constructor(private postService: PostService, private authorService: AuthorService) {}
 
-    async execute(request: AddCommentRequest): Promise<void> {
+    async execute(request: AddCommentRequest): Promise<AddCommentResponse> {
 
         const post: Post | null = await this.postService.getById(IdVO.createWithUUID(request.postId));
         if (!post) {
@@ -30,8 +30,10 @@ export class AddCommentUseCase {
 
         logger.debug(`Nickname author ${author.nickname.value}`);
 
+        const idComment = IdVO.create();
+
         const commentData: CommentType = {
-            id: IdVO.create(),
+            id: idComment,
             content: ContentCommentVO.create(request.contentComment),
             nickname: author.nickname,
             timestamp: TimestampVO.create()
@@ -41,6 +43,8 @@ export class AddCommentUseCase {
 
         await this.postService.addComment(post, new Comment(commentData));
 
+        return {idComment: idComment.value};
+
     }
 
 }
@@ -49,4 +53,8 @@ export type AddCommentRequest = {
     postId: string;
     nicknameComment: string;
     contentComment: string;
+}
+
+export type AddCommentResponse = {
+    idComment: string;
 }

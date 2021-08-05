@@ -40,4 +40,8 @@ export class Post {
         this.post.comments = [...this.post.comments, comment];
     }
 
+    deleteComment(idComment: IdVO): void {
+        this.post.comments = this.post.comments.filter(c => c.id.value !== idComment.value);
+    }
+
 }

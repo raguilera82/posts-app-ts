@@ -1,5 +1,6 @@
+import { DeleteCommentRequest, DeleteCommentUseCase } from './../../application/usecases/comments/delete-comment.usecase';
 import { logger } from './../config/logger';
-import { AddCommentUseCase, AddCommentRequest } from './../../application/usecases/comments/add-comment.usecase';
+import { AddCommentUseCase, AddCommentRequest, AddCommentResponse } from './../../application/usecases/comments/add-comment.usecase';
 import { CreatePostUseCase, CreatePostRequest } from './../../application/usecases/posts/create-post.usecase';
 import { body, validationResult } from 'express-validator';
 import express from 'express';
@@ -63,8 +64,8 @@ router.put('/api/posts/:idPost/comment',
                 nicknameComment
             };
             logger.debug(`LLamo a Add Comment Use Case con ${JSON.stringify(request)}`);
-            await useCase.execute(request);
-            res.status(201).json({status: 'Comment added'});
+            const response:AddCommentResponse  = await useCase.execute(request);
+            res.status(201).json({status: 'Comment added', ...response});
 
         }catch(err) {
             logger.error(err);
@@ -72,5 +73,37 @@ router.put('/api/posts/:idPost/comment',
         }
 
     });
+
+router.delete('/api/posts/:idPost/comment/:idComment',
+    passport.authenticate('jwt', {session: false}), 
+    hasRole([Role.PUBLISHER, Role.ADMIN]),
+    async(req: express.Request, res: express.Response) => {
+
+        try {
+
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
+            const idPost = req.params.idPost;
+            const idComment = req.params.idComment;
+
+            const useCase = Container.get(DeleteCommentUseCase);
+            const request: DeleteCommentRequest = {
+                idPost,
+                idComment
+            };
+            
+            await useCase.execute(request);
+            res.status(200).json({status: 'Comment deleted'});
+
+        }catch(err) {
+            logger.error(err);
+            return res.status(err.code).json({error: err.message});
+        }
+
+    });
+
 
 export {router as postsRouter};
