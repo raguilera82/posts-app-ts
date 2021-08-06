@@ -25,6 +25,22 @@ export class AuthorRepositoryMongo implements AuthorRepository {
         return new Author(authorData);
     }
 
+    async searchById(id: IdVO): Promise<Author | null> {
+        const authorDB = await AuthorModel.findOne({id: id.value}).exec();
+
+        if (!authorDB) {
+            return null;
+        }
+
+        const authorData: AuthorType = {
+            id: IdVO.createWithUUID(authorDB.id),
+            name: NameAuthorVO.create(authorDB.name),
+            nickname: NicknameVO.create(authorDB.nickname),
+        };
+
+        return new Author(authorData);
+    }
+
     async persist(author: Author): Promise<void> {
         const docAuthor = {
             id: author.id.value,

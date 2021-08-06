@@ -19,6 +19,10 @@ export class AuthorService {
         return this.authorRepository.searchByNickname(nickname);
     }
 
+    async getById(id: IdVO): Promise<Author | null> {
+        return this.authorRepository.searchById(id);
+    }
+
     async deleteById(id: IdVO): Promise<void> {
         this.authorRepository.deleteById(id);
     }

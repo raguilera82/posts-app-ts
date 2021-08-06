@@ -7,6 +7,8 @@ export interface AuthorRepository {
 
     searchByNickname(nickname: NicknameVO): Promise<Author | null>;
 
+    searchById(id: IdVO): Promise<Author | null>;
+
     deleteById(id: IdVO): Promise<void>;
 
     deleteAll(): Promise<void>;

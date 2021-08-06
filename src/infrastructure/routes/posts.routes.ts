@@ -1,3 +1,6 @@
+import 'reflect-metadata';
+
+import { User } from './../../domain/model/entities/user.entity';
 import { DeleteCommentRequest, DeleteCommentUseCase } from './../../application/usecases/comments/delete-comment.usecase';
 import { logger } from './../config/logger';
 import { AddCommentUseCase, AddCommentRequest, AddCommentResponse } from './../../application/usecases/comments/add-comment.usecase';
@@ -65,7 +68,7 @@ router.put('/api/posts/:idPost/comment',
             };
             logger.debug(`LLamo a Add Comment Use Case con ${JSON.stringify(request)}`);
             const response:AddCommentResponse  = await useCase.execute(request);
-            res.status(201).json({status: 'Comment added', ...response});
+            res.status(200).json({status: 'Comment added', ...response});
 
         }catch(err) {
             logger.error(err);
@@ -88,11 +91,13 @@ router.delete('/api/posts/:idPost/comment/:idComment',
 
             const idPost = req.params.idPost;
             const idComment = req.params.idComment;
+            const user = req.user as User;
 
             const useCase = Container.get(DeleteCommentUseCase);
             const request: DeleteCommentRequest = {
                 idPost,
-                idComment
+                idComment,
+                user
             };
             
             await useCase.execute(request);

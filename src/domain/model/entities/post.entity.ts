@@ -44,4 +44,8 @@ export class Post {
         this.post.comments = this.post.comments.filter(c => c.id.value !== idComment.value);
     }
 
+    getCommentById(idComment: IdVO): Comment | undefined {
+        return this.post.comments.find(c => c.id.value === idComment.value);
+    }
+
 }

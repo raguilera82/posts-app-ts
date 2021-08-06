@@ -5,7 +5,7 @@ import { logger } from './../src/infrastructure/config/logger';
 
 import { createPost } from './helpers/posts';
 import { createAuthor } from './helpers/author';
-import { getPublisherToken, getAdminToken } from './helpers/auth';
+import { getPublisherToken, getAdminToken, getOtherPublisherToken } from './helpers/auth';
 
 import supertest from 'supertest';
 import Container from 'typedi';
@@ -20,17 +20,15 @@ import app from '../src/app';
 describe('Comments', () => {
 
     const server: supertest.SuperTest<supertest.Test> = supertest(app);
-    let publisherToken = '';
-    let adminToken = '';
 
     beforeAll(async () => {
         await connectToDB();
         await sequelize.authenticate();
-        publisherToken = await getPublisherToken();
-        adminToken = await getAdminToken();
     });
 
     it('publisher should add commment to post', async() => {
+
+        const publisherToken = await getPublisherToken();
 
         await createAuthor();
 
@@ -42,11 +40,13 @@ describe('Comments', () => {
         await server.put(`/api/posts/${idPost}/comment`).type('application/json')
             .set('Authorization', `Bearer ${publisherToken}`)
             .send({nicknameComment, contentComment})
-            .expect(201);
+            .expect(200);
 
     });
 
     it('publisher should not add commment to post with offensive word', async() => {
+
+        const publisherToken = await getPublisherToken();
 
         await addOffensiveWords();
 
@@ -66,6 +66,8 @@ describe('Comments', () => {
 
     it('admin should add commment to post', async() => {
 
+        const adminToken = await getAdminToken();
+
         await createAuthor();
 
         const idPost = await createPost();
@@ -76,11 +78,13 @@ describe('Comments', () => {
         await server.put(`/api/posts/${idPost}/comment`).type('application/json')
             .set('Authorization', `Bearer ${adminToken}`)
             .send({nicknameComment, contentComment})
-            .expect(201);
+            .expect(200);
 
     });
 
     it('publisher should delete commment to post', async() => {
+
+        const publisherToken = await getPublisherToken();
 
         await createAuthor();
 
@@ -92,13 +96,65 @@ describe('Comments', () => {
         const response = await server.put(`/api/posts/${idPost}/comment`).type('application/json')
             .set('Authorization', `Bearer ${publisherToken}`)
             .send({nicknameComment, contentComment})
-            .expect(201);
+            .expect(200);
 
         logger.debug(`Response add comment ${JSON.stringify(response.body)}`);
 
         const idComment = response.body.idComment;
         await server.delete(`/api/posts/${idPost}/comment/${idComment}`).type('application/json')
             .set('Authorization', `Bearer ${publisherToken}`)
+            .expect(200);
+
+    });
+
+    it('publisher should not delete commment to post of the other publisher', async() => {
+
+        const publisherToken = await getPublisherToken();
+        const otherPublisherToken = await getOtherPublisherToken();
+
+        await createAuthor();
+
+        const idPost = await createPost();
+
+        const nicknameComment = 'Cervantes';
+        const contentComment = 'Me ha parecido una obra fundamental en la historia de la literatura, enhorabuena al autor, creo que me suena.';
+        logger.debug(`This is postId: ${idPost}`);
+        const response = await server.put(`/api/posts/${idPost}/comment`).type('application/json')
+            .set('Authorization', `Bearer ${publisherToken}`)
+            .send({nicknameComment, contentComment})
+            .expect(200);
+
+        logger.debug(`Response add comment ${JSON.stringify(response.body)}`);
+
+        const idComment = response.body.idComment;
+        await server.delete(`/api/posts/${idPost}/comment/${idComment}`).type('application/json')
+            .set('Authorization', `Bearer ${otherPublisherToken}`)
+            .expect(403);
+
+    });
+
+    it('admin should delete commment to post of the other publisher', async() => {
+
+        const otherPublisherToken = await getOtherPublisherToken();
+        const adminToken = await getAdminToken();
+        
+        await createAuthor();
+
+        const idPost = await createPost();
+
+        const nicknameComment = 'Cervantes';
+        const contentComment = 'Me ha parecido una obra fundamental en la historia de la literatura, enhorabuena al autor, creo que me suena.';
+        logger.debug(`This is postId: ${idPost}`);
+        const response = await server.put(`/api/posts/${idPost}/comment`).type('application/json')
+            .set('Authorization', `Bearer ${otherPublisherToken}`)
+            .send({nicknameComment, contentComment})
+            .expect(200);
+
+        logger.debug(`Response add comment ${JSON.stringify(response.body)}`);
+
+        const idComment = response.body.idComment;
+        await server.delete(`/api/posts/${idPost}/comment/${idComment}`).type('application/json')
+            .set('Authorization', `Bearer ${adminToken}`)
             .expect(200);
 
     });
@@ -112,12 +168,13 @@ describe('Comments', () => {
 
         const repoOffensiveWord: OffensiveWordRepository = Container.get('OffensiveWordRepository');
         await repoOffensiveWord.deleteAll();
+
+        const repoUser: UserRepository = Container.get('UserRepository');
+        await repoUser.deleteAll();
     });
 
     afterAll(async () => {
         disconnectDB();
-        const repoUser: UserRepository = Container.get('UserRepository');
-        await repoUser.deleteAll();
         await sequelize.close();
     });
 
