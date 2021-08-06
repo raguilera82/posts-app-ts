@@ -16,11 +16,11 @@
 import 'reflect-metadata';
 import {DeleteOffensiveWordUseCase} from './delete-offensive-word.usecase';
 import Container from 'typedi';
-import {OffensiveWordRepositoryMongo} from './../../infrastructure/repositories/offensive-word.repository.mongo';
-import { IdVO } from '../../domain/model/vos/id.vo';
-import { OffensiveWord } from '../../domain/model/entities/offensive-word.entity';
-import { WordVO } from '../../domain/model/vos/word.vo';
-import { LevelVO } from '../../domain/model/vos/level.vo';
+import {OffensiveWordRepositoryMongo} from '../../../infrastructure/repositories/offensive-word.repository.mongo';
+import { IdVO } from '../../../domain/model/vos/id.vo';
+import { OffensiveWord } from '../../../domain/model/entities/offensive-word.entity';
+import { WordVO } from '../../../domain/model/vos/word.vo';
+import { LevelVO } from '../../../domain/model/vos/level.vo';
 
 describe('Delete offensive word Use Case', () => {
 

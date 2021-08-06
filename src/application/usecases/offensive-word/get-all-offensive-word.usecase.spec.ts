@@ -1,4 +1,4 @@
-jest.mock('./../../infrastructure/repositories/offensive-word.repository.mongo', () => {
+jest.mock('./../../../infrastructure/repositories/offensive-word.repository.mongo', () => {
     return {
         OffensiveWordRepositoryMongo: jest.fn().mockImplementation(() => {
             return {
@@ -13,12 +13,12 @@ jest.mock('./../../infrastructure/repositories/offensive-word.repository.mongo',
 import 'reflect-metadata';
 import {GetAllOffensiveWordsUseCase} from './get-all-offensive-word.usecase';
 import Container from 'typedi';
-import {OffensiveWordRepositoryMongo} from './../../infrastructure/repositories/offensive-word.repository.mongo';
-import { IdVO } from '../../domain/model/vos/id.vo';
-import { LevelVO } from '../../domain/model/vos/level.vo';
+import {OffensiveWordRepositoryMongo} from './../../../infrastructure/repositories/offensive-word.repository.mongo';
+import { IdVO } from '../../../domain/model/vos/id.vo';
+import { LevelVO } from '../../../domain/model/vos/level.vo';
 import {validate} from 'uuid';
-import { OffensiveWord } from '../../domain/model/entities/offensive-word.entity';
-import { WordVO } from '../../domain/model/vos/word.vo';
+import { OffensiveWord } from '../../../domain/model/entities/offensive-word.entity';
+import { WordVO } from '../../../domain/model/vos/word.vo';
 
 describe('Get All offensive word Use Case', () => {
     it('should get all offensive word from repository', async () => {

@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
-import { OffensiveWord } from '../../domain/model/entities/offensive-word.entity';
-import { OffensiveWordService } from '../../domain/services/offensive-word.service';
+import { OffensiveWord } from '../../../domain/model/entities/offensive-word.entity';
+import { OffensiveWordService } from '../../../domain/services/offensive-word.service';
 import { OffensiveWordResponse } from './offensive-word.response';
 
 @Service()

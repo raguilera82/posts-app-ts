@@ -1,9 +1,9 @@
-jest.mock('./../../infrastructure/repositories/offensive-word.repository.mongo');
+jest.mock('./../../../infrastructure/repositories/offensive-word.repository.mongo');
 
 import 'reflect-metadata';
 import {CreateOffensiveWordUseCase} from './create-offensive-word.usecase';
 import Container from 'typedi';
-import {OffensiveWordRepositoryMongo} from './../../infrastructure/repositories/offensive-word.repository.mongo';
+import {OffensiveWordRepositoryMongo} from './../../../infrastructure/repositories/offensive-word.repository.mongo';
 import { OffensiveWordRequest } from './offensive-word.request';
 
 describe('Create offensive word Use Case', () => {

@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
-import { PasswordVO } from './../../domain/model/vos/password.vo';
+import { PasswordVO } from './../../../domain/model/vos/password.vo';
 import { Service } from 'typedi';
-import { ExceptionWithCode } from '../../domain/model/exception-with-code';
-import { EmailVO } from '../../domain/model/vos/email.vo';
-import { UserService } from '../../domain/services/user.service';
+import { ExceptionWithCode } from '../../../domain/model/exception-with-code';
+import { EmailVO } from '../../../domain/model/vos/email.vo';
+import { UserService } from '../../../domain/services/user.service';
 
 @Service()
 export class SignInUseCase {

@@ -1,9 +1,9 @@
 import { Service } from 'typedi';
-import { OffensiveWordType } from '../../domain/model/entities/offensive-word.entity';
-import { IdVO } from '../../domain/model/vos/id.vo';
-import { LevelVO } from '../../domain/model/vos/level.vo';
-import { WordVO } from '../../domain/model/vos/word.vo';
-import { OffensiveWordService } from '../../domain/services/offensive-word.service';
+import { OffensiveWordType } from '../../../domain/model/entities/offensive-word.entity';
+import { IdVO } from '../../../domain/model/vos/id.vo';
+import { LevelVO } from '../../../domain/model/vos/level.vo';
+import { WordVO } from '../../../domain/model/vos/word.vo';
+import { OffensiveWordService } from '../../../domain/services/offensive-word.service';
 import { OffensiveWordRequest } from './offensive-word.request';
 import { OffensiveWordResponse } from './offensive-word.response';
 

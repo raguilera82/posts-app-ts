@@ -1,4 +1,4 @@
-jest.mock('./../../infrastructure/repositories/user.repository.pg', () => {
+jest.mock('./../../../infrastructure/repositories/user.repository.pg', () => {
     return {
         UserRepositoryPG: jest.fn().mockImplementation(() => {
             return {
@@ -11,7 +11,7 @@ jest.mock('./../../infrastructure/repositories/user.repository.pg', () => {
 
 
 import 'reflect-metadata';
-import { UserRepositoryPG } from './../../infrastructure/repositories/user.repository.pg';
+import { UserRepositoryPG } from '../../../infrastructure/repositories/user.repository.pg';
 import { SignInUseCase, SignInRequest } from './sign-in.usecase';
 import { Container } from 'typedi';
 describe('Sign In', () => {

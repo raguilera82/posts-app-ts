@@ -3,8 +3,8 @@ import { SignUpAuthorUseCase, SignUpAuthorRequest } from './../../application/us
 import express from 'express';
 import { body, validationResult } from 'express-validator';
 import Container from 'typedi';
-import { SignInRequest, SignInUseCase } from '../../application/usecases/sign-in.usecase';
-import { SignUpRequest, SignUpUseCase } from '../../application/usecases/sign-up.usecase';
+import { SignInRequest, SignInUseCase } from '../../application/usecases/auth/sign-in.usecase';
+import { SignUpRequest, SignUpUseCase } from '../../application/usecases/auth/sign-up.usecase';
 import passport from 'passport';
 import { Role } from '../../domain/model/vos/role.vo';
 import { hasRole } from '../middlewares/roles';

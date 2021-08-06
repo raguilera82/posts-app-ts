@@ -3,7 +3,7 @@ import { getAdminToken } from './../helpers/auth';
 import { UserRepository } from '../../src/domain/repositories/user.repository';
 import { OffensiveWordRepository } from '../../src/domain/repositories/offensive-word.repository';
 import { Container } from 'typedi';
-import { OffensiveWordResponse } from '../../src/application/usecases/offensive-word.response';
+import { OffensiveWordResponse } from '../../src/application/usecases/offensive-word/offensive-word.response';
 import request from 'supertest';
 import app from '../../src/app';
 import { connectToDB, disconnectDB } from '../../src/infrastructure/config/mongo';
