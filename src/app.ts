@@ -20,6 +20,7 @@ import { authorsRouter } from './infrastructure/routes/author.routes';
 import { postsRouter } from './infrastructure/routes/posts.routes';
 import {logger} from './infrastructure/config/logger';
 import expressPinoLogger from 'express-pino-logger';
+import cors from 'cors';
 
 Container.set('OffensiveWordRepository', new OffensiveWordRepositoryMongo());
 Container.set('AuthorRepository', new AuthorRepositoryMongo());
@@ -29,6 +30,7 @@ Container.set('PostRepository', new PostRepositoryMongo());
 console.log('App started');
 
 const app = express();
+app.use(cors());
 app.use(json());
 app.use(expressPinoLogger({logger: logger}));
 app.use(offensiveWordRouter);
